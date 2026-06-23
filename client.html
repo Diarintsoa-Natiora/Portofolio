@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gestion des utilisateurs — ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #F5F4F0;
+    --surface:  #FFFFFF;
+    --surface2: #F0EEE9;
+    --border:   rgba(0,0,0,0.08);
+    --border2:  rgba(0,0,0,0.14);
+    --text:     #1A1917;
+    --muted:    #888680;
+    --hint:     #B5B3AE;
+    --accent:   #1A1917;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  html { font-size: 14px; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 220px;
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 0.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.25rem;
+  }
+
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .logo-name { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .logo-sub  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  .nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--hint);
+    padding: 0 0.5rem;
+    margin: 1rem 0 0.4rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.12s, color 0.12s;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--surface2); color: var(--text); font-weight: 500; }
+  .nav-item i { font-size: 17px; flex-shrink: 0; }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    color: var(--muted);
+  }
+  .nav-item.active .nav-badge { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .user-mini {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .user-mini:hover { background: var(--surface2); }
+  .user-mini-av {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: #1A1917;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .user-mini-name { font-size: 12px; font-weight: 500; }
+  .user-mini-role { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .user-mini i { margin-left: auto; font-size: 15px; color: var(--hint); }
+
+  /* ── MAIN ── */
+  .main {
+    flex: 1;
+    padding: 2rem 2rem 3rem;
+    overflow-x: hidden;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .page-header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+  .page-header p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text);
+    transition: background 0.12s, border-color 0.12s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--surface2); }
+  .btn i { font-size: 16px; }
+
+  .btn-dark {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .btn-dark:hover { background: #333; border-color: #333; }
+
+  /* ── STATS ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 1.75rem;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.15s;
+  }
+  .stat-card:hover { border-color: var(--border2); }
+
+  .stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .stat-label { font-size: 12px; color: var(--muted); font-weight: 500; }
+
+  .stat-icon {
+    width: 28px; height: 28px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .si-total   { background: #EAF3DE; color: #3B6D11; }
+  .si-active  { background: #E1F5EE; color: #0F6E56; }
+  .si-inactive{ background: #F1EFE8; color: #5F5E5A; }
+  .si-pending { background: #FAEEDA; color: #854F0B; }
+
+  .stat-value { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+  .stat-sub   { font-size: 11px; color: var(--muted); }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+  .search-box i {
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--hint);
+    pointer-events: none;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 8px 10px 8px 34px;
+    font-size: 13px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .search-box input:focus {
+    border-color: rgba(0,0,0,0.35);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+  }
+  .search-box input::placeholder { color: var(--hint); }
+
+  .filter-select {
+    padding: 8px 28px 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23888680' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.12s;
+  }
+  .filter-select:focus { border-color: rgba(0,0,0,0.35); }
+
+  /* ── TABLE ── */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead { background: var(--surface2); }
+
+  thead th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  thead th:last-child { text-align: right; }
+
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    color: var(--text);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr { transition: background 0.1s; }
+  tbody tr:hover { background: #FAFAF8; }
+
+  .checkbox-cell { width: 40px; }
+  input[type="checkbox"] {
+    width: 15px; height: 15px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    border-radius: 3px;
+  }
+
+  /* User cell */
+  .user-cell { display: flex; align-items: center; gap: 12px; }
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+  }
+  .av-1 { background: #E6F1FB; color: #0C447C; }
+  .av-2 { background: #EEEDFE; color: #3C3489; }
+  .av-3 { background: #E1F5EE; color: #085041; }
+  .av-4 { background: #FAECE7; color: #712B13; }
+  .av-5 { background: #FAEEDA; color: #633806; }
+  .av-6 { background: #FBEAF0; color: #72243E; }
+
+  .u-name  { font-weight: 500; font-size: 13px; }
+  .u-email { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  /* Role badge */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .r-admin    { background: #EEEDFE; color: #3C3489; }
+  .r-manager  { background: #E6F1FB; color: #0C447C; }
+  .r-user     { background: #F1EFE8; color: #444441; }
+  .r-comptable{ background: #FAEEDA; color: #633806; }
+  .r-support  { background: #E1F5EE; color: #085041; }
+  .r-rh       { background: #FBEAF0; color: #72243E; }
+
+  /* Status */
+  .status { display: flex; align-items: center; gap: 7px; }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-on  { background: #639922; }
+  .dot-off { background: var(--hint); }
+  .dot-pend{ background: #EF9F27; }
+  .status span { font-size: 13px; }
+
+  /* Actions */
+  .actions { display: flex; gap: 2px; justify-content: flex-end; }
+  .act-btn {
+    width: 30px; height: 30px;
+    border: none;
+    background: none;
+    border-radius: var(--radius-sm);
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.1s, color 0.1s;
+  }
+  .act-btn:hover { background: var(--surface2); color: var(--text); }
+  .act-btn.danger:hover { background: #FCEBEB; color: #A32D2D; }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .pag-pages { display: flex; gap: 4px; }
+  .pag-btn {
+    min-width: 30px; height: 30px;
+    padding: 0 6px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: inherit;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .pag-btn:hover:not(.active) { background: var(--surface2); }
+  .pag-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .pag-btn:disabled { opacity: 0.38; cursor: not-allowed; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,10,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s;
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 520px;
+    transform: translateY(16px);
+    transition: transform 0.2s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-head h2 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .modal-head p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .modal-close-btn {
+    width: 30px; height: 30px;
+    border: none;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    font-size: 17px;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.1s, color 0.1s;
+    flex-shrink: 0;
+  }
+  .modal-close-btn:hover { background: #E8E5DF; color: var(--text); }
+
+  .modal-body { padding: 1.25rem 1.5rem; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .form-field { display: flex; flex-direction: column; gap: 5px; }
+  .form-field.full { grid-column: 1 / -1; }
+
+  .form-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .form-field input,
+  .form-field select {
+    padding: 8px 11px;
+    font-size: 13px;
+    font-family: inherit;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .form-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23888680' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+    cursor: pointer;
+  }
+  .form-field input:focus,
+  .form-field select:focus {
+    border-color: rgba(0,0,0,0.38);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.07);
+  }
+  .form-field input::placeholder { color: var(--hint); }
+
+  .permissions-block {
+    margin-top: 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .perm-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  .perm-row:last-child { border-bottom: none; }
+  .perm-row:nth-child(even) { background: var(--surface2); }
+  .perm-label { display: flex; align-items: center; gap: 8px; color: var(--text); }
+  .perm-label i { font-size: 15px; color: var(--muted); }
+
+  .toggle {
+    width: 34px; height: 18px;
+    border-radius: 20px;
+    background: var(--hint);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    border: none;
+  }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    top: 3px; left: 3px;
+    transition: transform 0.2s;
+  }
+  .toggle.on { background: #639922; }
+  .toggle.on::after { transform: translateX(16px); }
+
+  .modal-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .modal-foot-note { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .modal-foot-actions { display: flex; gap: 8px; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--accent);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 200;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: transform 0.25s, opacity 0.25s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast i { font-size: 18px; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .main { padding: 1rem 1rem 2rem; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-field.full { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" aria-label="Navigation principale">
+  <div class="sidebar-logo">
+    <div class="logo-mark">E</div>
+    <div>
+      <div class="logo-name">ERP Suite</div>
+      <div class="logo-sub">v3.4.1</div>
+    </div>
+  </div>
+
+  <span class="nav-label">Principal</span>
+  <a class="nav-item" href="#"><i class="ti ti-dashboard" aria-hidden="true"></i> Tableau de bord</a>
+  <a class="nav-item active" href="#"><i class="ti ti-users" aria-hidden="true"></i> Utilisateurs <span class="nav-badge">48</span></a>
+  <a class="nav-item" href="#"><i class="ti ti-building" aria-hidden="true"></i> Départements</a>
+  <a class="nav-item" href="#"><i class="ti ti-shield-lock" aria-hidden="true"></i> Permissions</a>
+
+  <span class="nav-label">Système</span>
+  <a class="nav-item" href="#"><i class="ti ti-settings" aria-hidden="true"></i> Paramètres</a>
+  <a class="nav-item" href="#"><i class="ti ti-chart-bar" aria-hidden="true"></i> Rapports</a>
+  <a class="nav-item" href="#"><i class="ti ti-history" aria-hidden="true"></i> Journaux</a>
+  <a class="nav-item" href="#"><i class="ti ti-bell" aria-hidden="true"></i> Notifications</a>
+
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-mini-av">SL</div>
+      <div>
+        <div class="user-mini-name">Sophie Laurent</div>
+        <div class="user-mini-role">Administrateur</div>
+      </div>
+      <i class="ti ti-chevron-right" aria-hidden="true"></i>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div>
+      <h1>Gestion des utilisateurs</h1>
+      <p>Administration des comptes, rôles et droits d'accès</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn" onclick="exportData()"><i class="ti ti-download" aria-hidden="true"></i> Exporter</button>
+      <button class="btn" onclick="importData()"><i class="ti ti-upload" aria-hidden="true"></i> Importer</button>
+      <button class="btn btn-dark" onclick="openModal()"><i class="ti ti-plus" aria-hidden="true"></i> Nouvel utilisateur</button>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <section class="stats" aria-label="Statistiques utilisateurs">
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-label">Total utilisateurs</span>
+        <div class="stat-icon si-total"><i class="ti ti-users" aria-hidden="true"></i></div>
+      </div>
+      <div class="stat-value">48</div>
+      <div class="stat-sub">+3 ce mois-ci</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-label">Actifs</span>
+        <div class="stat-icon si-active"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
+      </div>
+      <div class="stat-value">41</div>
+      <div class="stat-sub">85 % du total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-label">Inactifs</span>
+        <div class="stat-icon si-inactive"><i class="ti ti-circle-minus" aria-hidden="true"></i></div>
+      </div>
+      <div class="stat-value">5</div>
+      <div class="stat-sub">Dernière: 3 juin</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-label">En attente</span>
+        <div class="stat-icon si-pending"><i class="ti ti-clock" aria-hidden="true"></i></div>
+      </div>
+      <div class="stat-value">2</div>
+      <div class="stat-sub">Invitation envoyée</div>
+    </div>
+  </section>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="ti ti-search" aria-hidden="true"></i>
+      <input type="text" placeholder="Rechercher par nom, email, département…" aria-label="Rechercher un utilisateur" />
+    </div>
+    <select class="filter-select" aria-label="Filtrer par rôle">
+      <option>Tous les rôles</option>
+      <option>Administrateur</option>
+      <option>Manager</option>
+      <option>Utilisateur</option>
+      <option>Comptable</option>
+      <option>Support</option>
+      <option>RH</option>
+    </select>
+    <select class="filter-select" aria-label="Filtrer par statut">
+      <option>Tous les statuts</option>
+      <option>Actif</option>
+      <option>Inactif</option>
+      <option>En attente</option>
+    </select>
+    <select class="filter-select" aria-label="Filtrer par département">
+      <option>Tous les depts</option>
+      <option>IT</option>
+      <option>Finance</option>
+      <option>RH</option>
+      <option>Commercial</option>
+      <option>Direction</option>
+    </select>
+    <button class="btn" onclick="resetFilters()"><i class="ti ti-refresh" aria-hidden="true"></i></button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th class="checkbox-cell"><input type="checkbox" aria-label="Tout sélectionner" id="checkAll" /></th>
+          <th>Utilisateur</th>
+          <th>Rôle</th>
+          <th>Département</th>
+          <th>Statut</th>
+          <th>Dernière connexion</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="userTable">
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td><div class="user-cell"><div class="avatar av-1">SL</div><div><div class="u-name">Sophie Laurent</div><div class="u-email">s.laurent@erp.fr</div></div></div></td>
+          <td><span class="badge r-admin">Administrateur</span></td>
+          <td>IT</td>
+          <td><div class="status"><span class="dot dot-on"></span><span>Actif</span></div></td>
+          <td>Aujourd'hui 09:14</td>
+          <td><div class="actions"><button class="act-btn" title="Modifier" onclick="editUser('Sophie Laurent')"><i class="ti ti-edit"></i></button><button class="act-btn" title="Voir le profil"><i class="ti ti-eye"></i></button><button class="act-btn danger" title="Désactiver"><i class="ti ti-lock"></i></button><button class="act-btn danger" title="Supprimer" onclick="deleteUser(this)"><i class="ti ti-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td><div class="user-cell"><div class="avatar av-2">MK</div><div><div class="u-name">Marc Kowalski</div><div class="u-email">m.kowalski@erp.fr</div></div></div></td>
+          <td><span class="badge r-manager">Manager</span></td>
+          <td>Commercial</td>
+          <td><div class="status"><span class="dot dot-on"></span><span>Actif</span></div></td>
+          <td>Hier 17:32</td>
+          <td><div class="actions"><button class="act-btn" title="Modifier"><i class="ti ti-edit"></i></button><button class="act-btn" title="Voir le profil"><i class="ti ti-eye"></i></button><button class="act-btn danger" title="Désactiver"><i class="ti ti-lock"></i></button><button class="act-btn danger" title="Supprimer" onclick="deleteUser(this)"><i class="ti ti-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td><div class="user-cell"><div class="avatar av-3">AB</div><div><div class="u-name">Amina Benali</div><div class="u-email">a.benali@erp.fr</div></div></div></td>
+          <td><span class="badge r-comptable">Comptable</span></td>
+          <td>Finance</td>
+          <td><div class="status"><span class="dot dot-on"></span><span>Actif</span></div></td>
+          <td>Aujourd'hui 08:47</td>
+          <td><div class="actions"><button class="act-btn" title="Modifier"><i class="ti ti-edit"></i></button><button class="act-btn" title="Voir le profil"><i class="ti ti-eye"></i></button><button class="act-btn danger" title="Désactiver"><i class="ti ti-lock"></i></button><button class="act-btn danger" title="Supprimer" onclick="deleteUser(this)"><i class="ti ti-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td><div class="user-cell"><div class="avatar av-4">TR</div><div><div class="u-name">Thomas Renard</div><div class="u-email">t.renard@erp.fr</div></div></div></td>
+          <td><span class="badge r-user">Utilisateur</span></td>
+          <td>RH</td>
+          <td><div class="status"><span class="dot dot-off"></span><span>Inactif</span></div></td>
+          <td>12 juin 2026</td>
+          <td><div class="actions"><button class="act-btn" title="Modifier"><i class="ti ti-edit"></i></button><button class="act-btn" title="Voir le profil"><i class="ti ti-eye"></i></button><button class="act-btn danger" title="Réactiver"><i class="ti ti-lock-open"></i></button><button class="act-btn danger" title="Supprimer" onclick="deleteUser(this)"><i class="ti ti-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td><div class="user-cell"><div class="avatar av-5">LD</div><div><div class="u-name">Lucie Dubois</div><div class="u-email">l.dubois@erp.fr</div></div></div></td>
+          <td><span class="badge r-support">Support</span></td>
+          <td>IT</td>
+          <td><div class="status"><span class="dot dot-pend"></span><span>En attente</span></div></td>
+          <td>—</td>
+          <td><div class="actions"><button class="act-btn" title="Modifier"><i class="ti ti-edit"></i></button><button class="act-btn" title="Voir le profil"><i class="ti ti-eye"></i></button><button class="act-btn" title="Renvoyer invitation"><i class="ti ti-mail"></i></button><button class="act-btn danger" title="Supprimer" onclick="deleteUser(this)"><i class="ti ti-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td><div class="user-cell"><div class="avatar av-6">NM</div><div><div class="u-name">Nadia Martin</div><div class="u-email">n.martin@erp.fr</div></div></div></td>
+          <td><span class="badge r-manager">Manager</span></td>
+          <td>Finance</td>
+          <td><div class="status"><span class="dot dot-on"></span><span>Actif</span></div></td>
+          <td>Aujourd'hui 10:02</td>
+          <td><div class="actions"><button class="act-btn" title="Modifier"><i class="ti ti-edit"></i></button><button class="act-btn" title="Voir le profil"><i class="ti ti-eye"></i></button><button class="act-btn danger" title="Désactiver"><i class="ti ti-lock"></i></button><button class="act-btn danger" title="Supprimer" onclick="deleteUser(this)"><i class="ti ti-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td><div class="user-cell"><div class="avatar av-1">JP</div><div><div class="u-name">Julien Petit</div><div class="u-email">j.petit@erp.fr</div></div></div></td>
+          <td><span class="badge r-user">Utilisateur</span></td>
+          <td>Commercial</td>
+          <td><div class="status"><span class="dot dot-on"></span><span>Actif</span></div></td>
+          <td>Hier 11:55</td>
+          <td><div class="actions"><button class="act-btn" title="Modifier"><i class="ti ti-edit"></i></button><button class="act-btn" title="Voir le profil"><i class="ti ti-eye"></i></button><button class="act-btn danger" title="Désactiver"><i class="ti ti-lock"></i></button><button class="act-btn danger" title="Supprimer" onclick="deleteUser(this)"><i class="ti ti-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td><div class="user-cell"><div class="avatar av-3">CF</div><div><div class="u-name">Chloé Faure</div><div class="u-email">c.faure@erp.fr</div></div></div></td>
+          <td><span class="badge r-rh">RH</span></td>
+          <td>RH</td>
+          <td><div class="status"><span class="dot dot-off"></span><span>Inactif</span></div></td>
+          <td>3 juin 2026</td>
+          <td><div class="actions"><button class="act-btn" title="Modifier"><i class="ti ti-edit"></i></button><button class="act-btn" title="Voir le profil"><i class="ti ti-eye"></i></button><button class="act-btn danger" title="Réactiver"><i class="ti ti-lock-open"></i></button><button class="act-btn danger" title="Supprimer" onclick="deleteUser(this)"><i class="ti ti-trash"></i></button></div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <span id="pag-info">Affichage de 1–8 sur 48 utilisateurs</span>
+      <div class="pag-pages">
+        <button class="pag-btn" title="Précédent" disabled>‹</button>
+        <button class="pag-btn active">1</button>
+        <button class="pag-btn">2</button>
+        <button class="pag-btn">3</button>
+        <button class="pag-btn" disabled>…</button>
+        <button class="pag-btn">6</button>
+        <button class="pag-btn" title="Suivant">›</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- MODAL Nouvel utilisateur -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2 id="modalTitle">Nouvel utilisateur</h2>
+        <p>Remplissez les informations pour créer le compte</p>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal()" aria-label="Fermer la fenêtre">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="f-prenom">Prénom</label>
+          <input id="f-prenom" type="text" placeholder="ex : Sophie" />
+        </div>
+        <div class="form-field">
+          <label for="f-nom">Nom</label>
+          <input id="f-nom" type="text" placeholder="ex : Laurent" />
+        </div>
+        <div class="form-field full">
+          <label for="f-email">Adresse e-mail</label>
+          <input id="f-email" type="email" placeholder="prenom.nom@entreprise.fr" />
+        </div>
+        <div class="form-field">
+          <label for="f-role">Rôle</label>
+          <select id="f-role">
+            <option>Utilisateur</option>
+            <option>Manager</option>
+            <option>Comptable</option>
+            <option>Support</option>
+            <option>RH</option>
+            <option>Administrateur</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="f-dept">Département</label>
+          <select id="f-dept">
+            <option>IT</option>
+            <option>Finance</option>
+            <option>RH</option>
+            <option>Commercial</option>
+            <option>Direction</option>
+          </select>
+        </div>
+        <div class="form-field full">
+          <label>Permissions</label>
+          <div class="permissions-block">
+            <div class="perm-row">
+              <span class="perm-label"><i class="ti ti-file-text" aria-hidden="true"></i> Lecture des rapports</span>
+              <button class="toggle on" onclick="togglePerm(this)" aria-label="Désactiver lecture rapports"></button>
+            </div>
+            <div class="perm-row">
+              <span class="perm-label"><i class="ti ti-pencil" aria-hidden="true"></i> Modification des données</span>
+              <button class="toggle" onclick="togglePerm(this)" aria-label="Activer modification données"></button>
+            </div>
+            <div class="perm-row">
+              <span class="perm-label"><i class="ti ti-users" aria-hidden="true"></i> Gestion des utilisateurs</span>
+              <button class="toggle" onclick="togglePerm(this)" aria-label="Activer gestion utilisateurs"></button>
+            </div>
+            <div class="perm-row">
+              <span class="perm-label"><i class="ti ti-settings" aria-hidden="true"></i> Accès paramètres système</span>
+              <button class="toggle" onclick="togglePerm(this)" aria-label="Activer accès paramètres"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <span class="modal-foot-note"><i class="ti ti-mail" aria-hidden="true"></i> Un email d'invitation sera envoyé</span>
+      <div class="modal-foot-actions">
+        <button class="btn" onclick="closeModal()">Annuler</button>
+        <button class="btn btn-dark" onclick="createUser()"><i class="ti ti-plus" aria-hidden="true"></i> Créer l'utilisateur</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <i class="ti ti-circle-check" aria-hidden="true"></i>
+  <span id="toastMsg">Action effectuée</span>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+    document.getElementById('f-prenom').focus();
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function createUser() {
+    const p = document.getElementById('f-prenom').value.trim();
+    const n = document.getElementById('f-nom').value.trim();
+    if (!p || !n) { showToast('Veuillez renseigner le prénom et le nom.'); return; }
+    closeModal();
+    showToast(`Utilisateur ${p} ${n} créé — invitation envoyée.`);
+  }
+
+  function deleteUser(btn) {
+    const row = btn.closest('tr');
+    const name = row.querySelector('.u-name').textContent;
+    if (confirm(`Supprimer l'utilisateur "${name}" ?`)) {
+      row.style.transition = 'opacity 0.25s';
+      row.style.opacity = '0';
+      setTimeout(() => { row.remove(); showToast(`${name} supprimé.`); }, 250);
+    }
+  }
+
+  function editUser(name) { openModal(); }
+
+  function togglePerm(btn) {
+    btn.classList.toggle('on');
+  }
+
+  function exportData() { showToast('Export CSV en cours de téléchargement…'); }
+  function importData() { showToast('Sélectionnez un fichier CSV à importer.'); }
+  function resetFilters() { showToast('Filtres réinitialisés.'); }
+
+  document.getElementById('checkAll').addEventListener('change', function() {
+    document.querySelectorAll('#userTable input[type="checkbox"]')
+      .forEach(cb => cb.checked = this.checked);
+  });
+</script>
+</body>
+</html>
