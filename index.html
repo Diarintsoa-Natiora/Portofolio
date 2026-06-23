@@ -1542,16 +1542,16 @@ function toggleLang() {
 }
 
 function applyLang() {
-  document.getElementById('langToggle').textContent = currentLang.toUpperCase() === 'FR' ? 'EN' : 'FR';
-  document.querySelectorAll('[data-fr]').forEach(el => {
-    const key = `data-${currentLang}`;
-    if (el.getAttribute(key)) el.textContent = el.getAttribute(key);
-  });
-  // Also update innerHTML for elements with HTML entities
+  const flag = document.getElementById('currentFlag');
+  const langText = document.getElementById('currentLang');
+  if (flag) flag.textContent = currentLang === 'fr' ? '🇫🇷' : '🇬🇧';
+  if (langText) langText.textContent = currentLang === 'fr' ? 'FR' : 'EN';
+
   document.querySelectorAll('[data-fr]').forEach(el => {
     const val = el.getAttribute(`data-${currentLang}`);
-    if (val && (val.includes('&') || val.includes('<'))) el.innerHTML = val;
-    else if (val) el.textContent = val;
+    if (!val) return;
+    if (val.includes('&') || val.includes('<')) el.innerHTML = val;
+    else el.textContent = val;
   });
 }
 
@@ -1694,24 +1694,6 @@ window.addEventListener('scroll', () => {
     nav.style.boxShadow = 'none';
   }
 });
-
-let isFrench = true;
-
-function toggleLang() {
-  isFrench = !isFrench;
-  const flag = document.getElementById('currentFlag');
-  const langText = document.getElementById('currentLang');
-
-  if (isFrench) {
-    flag.textContent = '🇫🇷';
-    langText.textContent = 'FR';
-  } else {
-    flag.textContent = '🇬🇧';
-    langText.textContent = 'EN';
-  }
-
-  // Votre code de traduction...
-}
 
 // ============================================================
 // YEAR
