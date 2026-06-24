@@ -803,14 +803,14 @@ footer {
 }
 
 .avatar-img {
-  width: 200%;
-  max-width:500px;           /* ← Vous pouvez augmenter à 300px si besoin */
-  height: auto;               /* Important : garde les proportions */
+  width: 100%;
+  max-width: 320px;
+  height: auto;
   border-radius: 12px;
-  object-fit: contain;        /* ← Changé de "cover" à "contain" pour ne plus couper */
+  object-fit: contain;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
   transition: transform 0.4s ease;
-  background: #1a1a2e;        /* Fond au cas où il y ait des espaces transparents */
+  background: #1a1a2e;
 }
 
 .avatar-img:hover {
@@ -947,6 +947,161 @@ footer {
   font-size: 40px;
 
   cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero {
+    padding: 100px 1.5rem 3rem;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .timeline {
+    padding-left: 0.5rem;
+  }
+
+  .timeline-item {
+    padding: 0 0 2rem 0.5rem;
+  }
+
+  .timeline-dot {
+    left: -1.8rem;
+  }
+
+  .modal-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 1rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-controls {
+    gap: 0.5rem;
+  }
+
+  .mobile-menu {
+    top: 70px;
+    left: 0;
+    right: 0;
+  }
+
+  .hero {
+    padding-top: 90px;
+  }
+
+  .hero-title {
+    font-size: 0.95rem;
+  }
+
+  .hero-tagline {
+    font-size: 0.9rem;
+  }
+
+  .projects-grid,
+  .skills-grid {
+    gap: 1rem;
+  }
+
+  .project-body {
+    padding: 1rem;
+  }
+
+  .project-card {
+    min-height: auto;
+  }
+
+  .hero-terminal {
+    width: 100%;
+  }
+
+  .projects-grid,
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal {
+    max-width: 95%;
+    margin: 0 0.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 90px 1rem 2.5rem;
+  }
+
+  .nav-controls {
+    gap: 0.5rem;
+  }
+
+  .lang-toggle {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .project-name {
+    font-size: 1rem;
+  }
+
+  .project-desc {
+    font-size: 0.85rem;
+  }
+
+  .project-tech {
+    gap: 0.35rem;
+  }
+
+  .modal-hero {
+    height: 180px;
+    font-size: 3rem;
+  }
+
+  .gallery-item img {
+    height: 180px;
+  }
 }
 </style>
 </head>
@@ -1566,7 +1721,15 @@ const PROJECTS = {
   },
   {
     image: "image/projet/route/image9.png",
-    label: "Signalements"
+    label: "Ajout Signalements"
+  },
+  {
+    image: "image/projet/route/image6.png",
+    label: "Catalogue Signalements"
+  },
+  {
+    image: "image/projet/route/image5.png",
+    label: "Details Signalements"
   },
   {
     image: "image/projet/route/image4.png",
@@ -1794,29 +1957,25 @@ const PROJECTS = {
 
   gallery: [
     {
-      image: 'image/projet/glpi/image1.png',
-      label: 'Accueil'
-    },
-    {
-      image: 'image/projet/ERP/image2.png',
-      label: 'Services'
-    },
-    {
-      image: 'image/projet/ERP/stocks.png',
+      image: 'image/projet/erp/image1.png',
       label: 'Ressources Humaines'
     },
     {
-      image: 'image/projet/ERP/accounting.png',
+      image: 'image/projet/erp/image2.png',
+      label: 'Stocks'
+    },
+     {
+      image: 'image/projet/erp/image3.png',
       label: 'Comptabilité'
     },
+     {
+      image: 'image/projet/erp/image4.png',
+      label: 'Utilisateurs'
+    } ,
     {
-      image: 'image/projet/ERP/reports.png',
-      label: 'Rapports'
-    },
-    {
-      image: 'image/projet/ERP/image3.png',
-      label: 'Gestion Utilisateurs'
-    }
+      image: 'image/projet/erp/image5.png',
+      label: 'Projets'
+    }    
   ],
 
   objectives: {
@@ -1915,28 +2074,36 @@ mlunch: {
 
   gallery: [
     {
-      image: 'image/projet/mlunch/home.png',
+      image: 'image/projet/mlunch/image1.png',
       label: 'Accueil'
     },
     {
-      image: 'image/projet/mlunch/restaurants.png',
+      image: 'image/projet/mlunch/image2.png',
+      label: 'Connexion'
+    },
+    {
+      image: 'image/projet/mlunch/image3.png',
+      label: 'Inscription'
+    },
+    {
+      image: 'image/projet/mlunch/image4.png',
       label: 'Restaurants'
     },
     {
-      image: 'image/projet/mlunch/orders.png',
+      image: 'image/projet/mlunch/image5.png',
+      label: 'Panier/Paiement'
+    },
+    {
+      image: 'image/projet/mlunch/image6.png',
       label: 'Commandes'
     },
     {
-      image: 'image/projet/mlunch/delivery.png',
+      image: 'image/projet/mlunch/image7.png',
       label: 'Livraison'
     },
-    {
-      image: 'image/projet/mlunch/map.png',
-      label: 'Carte'
-    },
-    {
-      image: 'image/projet/mlunch/admin.png',
-      label: 'Administration'
+     {
+      image: 'image/projet/mlunch/image8.png',
+      label: 'Secteurs'
     }
   ],
 

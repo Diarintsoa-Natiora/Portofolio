@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NexaERP — Ressources Humaines</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --midnight:#FFFFFF;
+  --navy:#1E3A5F;
+  --teal:#00C2A8;
+  --teal-light:#00E5CC;
+  --violet:#818CF8;
+  --snow:#0F172A;
+  --slate:#64748B;
+  --border:#E2E8F0;
+  --card:#F8FAFC;
+}
+html{scroll-behavior:smooth}
+body{background:#FFFFFF;color:#0F172A;font-family:'Inter',sans-serif;overflow-x:hidden}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 3rem;height:64px;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:'Sora',sans-serif;font-weight:800;font-size:1.25rem;color:#0F172A;text-decoration:none;letter-spacing:-0.02em}
+.nav-logo span{color:var(--teal)}
+.nav-links{display:flex;gap:0.5rem}
+.nav-links a{
+  text-decoration:none;padding:0.5rem 1.1rem;border-radius:6px;
+  font-size:0.875rem;font-weight:500;color:var(--slate);transition:all 0.2s;
+}
+.nav-links a:hover{color:#0F172A;background:#F1F5F9}
+.nav-links a.active{color:var(--teal);background:rgba(0,194,168,0.1)}
+.nav-cta{
+  background:var(--teal);color:var(--midnight);
+  padding:0.5rem 1.25rem;border-radius:6px;font-size:0.875rem;font-weight:600;
+  text-decoration:none;transition:background 0.2s;
+}
+.nav-cta:hover{background:var(--teal-light)}
+
+.hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:4rem;padding:7rem 3rem 4rem;
+  max-width:1280px;margin:0 auto;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.3);
+  border-radius:100px;padding:0.35rem 1rem;margin-bottom:1.5rem;
+  font-size:0.75rem;font-weight:600;color:var(--violet);letter-spacing:0.08em;text-transform:uppercase;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--violet);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero h1{
+  font-family:'Sora',sans-serif;font-size:clamp(2.2rem,4vw,3.5rem);
+  font-weight:800;line-height:1.1;letter-spacing:-0.03em;margin-bottom:1.25rem;
+}
+.hero h1 em{font-style:normal;color:var(--teal)}
+.hero p{font-size:1.05rem;color:var(--slate);line-height:1.7;max-width:480px;margin-bottom:2.5rem}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{
+  background:#00C2A8;color:#0F172A;padding:0.85rem 2rem;
+  border-radius:8px;font-weight:700;font-size:0.95rem;text-decoration:none;
+  transition:all 0.2s;display:inline-block;
+}
+.btn-primary:hover{background:var(--teal-light);transform:translateY(-1px)}
+.btn-ghost{
+  border:1px solid var(--border);color:#0F172A;padding:0.85rem 2rem;
+  border-radius:8px;font-weight:500;font-size:0.95rem;text-decoration:none;
+  transition:all 0.2s;display:inline-block;
+}
+.btn-ghost:hover{border-color:var(--slate);background:var(--border)}
+
+/* RH DASHBOARD */
+.dashboard-visual{
+  background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;
+  padding:1.5rem;position:relative;overflow:hidden;
+}
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.dash-title{font-size:0.75rem;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:0.06em}
+.dash-count{font-size:0.75rem;color:var(--violet);background:rgba(129,140,248,0.1);padding:0.2rem 0.6rem;border-radius:4px}
+
+.team-overview{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem}
+.team-stat{background:rgba(226,232,240,0.6);border:1px solid var(--border);border-radius:10px;padding:0.9rem}
+.ts-label{font-size:0.7rem;color:var(--slate);margin-bottom:0.3rem;font-weight:500}
+.ts-value{font-family:'Sora',sans-serif;font-size:1.4rem;font-weight:700;color:#0F172A}
+.ts-sub{font-size:0.65rem;color:var(--teal);margin-top:0.15rem}
+
+.employee-list{margin-bottom:1rem}
+.employee-row{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.55rem 0;border-bottom:1px solid rgba(30,41,59,0.6);
+}
+.employee-row:last-child{border:none}
+.emp-avatar{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.65rem;font-weight:700;flex-shrink:0;color:var(--midnight);
+}
+.emp-info{flex:1;min-width:0}
+.emp-name{font-size:0.75rem;font-weight:600;color:#0F172A}
+.emp-role{font-size:0.65rem;color:var(--slate);margin-top:0.05rem}
+.emp-status{font-size:0.65rem;padding:0.15rem 0.5rem;border-radius:3px;font-weight:600;flex-shrink:0}
+.status-present{background:rgba(0,194,168,0.15);color:var(--teal)}
+.status-conge{background:rgba(129,140,248,0.15);color:var(--violet)}
+.status-remote{background:rgba(245,158,11,0.15);color:#F59E0B}
+
+.payroll-summary{
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);
+  border-radius:8px;padding:0.75rem 1rem;font-size:0.75rem;
+}
+.ps-label{color:var(--slate)}
+.ps-val{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;color:var(--teal)}
+
+/* SECTION */
+.section{padding:5rem 3rem;max-width:1280px;margin:0 auto}
+.section-label{font-size:0.75rem;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem}
+.section-title{font-family:'Sora',sans-serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;letter-spacing:-0.02em;margin-bottom:1rem;color:#0F172A}
+.section-desc{color:var(--slate);font-size:1rem;line-height:1.7;max-width:560px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.feature-card{
+  background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;
+  padding:1.75rem;transition:border-color 0.2s,transform 0.2s;
+}
+.feature-card:hover{border-color:rgba(0,194,168,0.4);transform:translateY(-3px)}
+.feature-icon{width:44px;height:44px;background:rgba(0,194,168,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:1.25rem}
+.feature-card h3{font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.6rem;color:#0F172A}
+.feature-card p{font-size:0.875rem;color:var(--slate);line-height:1.6}
+
+/* WORKFLOW */
+.workflow-section{
+  padding:5rem 3rem;border-top:1px solid var(--border);
+  background:rgba(248,250,252,0.8);
+}
+.workflow-inner{max-width:1280px;margin:0 auto}
+.workflow-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;position:relative}
+.workflow-steps::before{
+  content:'';position:absolute;top:22px;left:10%;right:10%;
+  height:1px;background:linear-gradient(90deg,transparent,var(--border),var(--border),transparent);
+  z-index:0;
+}
+.step{text-align:center;position:relative;z-index:1}
+.step-num{
+  width:44px;height:44px;border-radius:50%;
+  background:#FFFFFF;border:1px solid #E2E8F0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-weight:700;font-size:0.9rem;
+  margin:0 auto 1rem;color:var(--teal);
+}
+.step h4{font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:0.5rem;color:#0F172A}
+.step p{font-size:0.8rem;color:var(--slate);line-height:1.5}
+
+.kpi-band{
+  border-top:1px solid #E2E8F0;border-bottom:1px solid #E2E8F0;
+  padding:3rem;display:flex;justify-content:space-around;flex-wrap:wrap;gap:2rem;
+}
+.kpi-item{text-align:center}
+.kpi-number{font-family:'Sora',sans-serif;font-size:2.5rem;font-weight:800;color:var(--teal)}
+.kpi-desc{font-size:0.825rem;color:var(--slate);margin-top:0.4rem}
+
+footer{padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #E2E8F0;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Sora',sans-serif;font-weight:800;color:#0F172A;font-size:1rem}
+.footer-logo span{color:var(--teal)}
+.footer-copy{font-size:0.8rem;color:#64748B}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:6rem}
+  .dashboard-visual{display:none}
+  .features-grid{grid-template-columns:1fr 1fr}
+  .workflow-steps{grid-template-columns:1fr 1fr}
+  .workflow-steps::before{display:none}
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+}
+@media(max-width:600px){
+  .features-grid{grid-template-columns:1fr}
+  .workflow-steps{grid-template-columns:1fr}
+  .hero{padding:5rem 1.5rem 3rem}
+  .section,.workflow-section{padding:3rem 1.5rem}
+  footer{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="stock.html" class="nav-logo">Nexa<span>ERP</span></a>
+  <div class="nav-links">
+    <a href="stock.html">Stock</a>
+    <a href="comptabilite.html">Comptabilité</a>
+    <a href="user.html">Utilisateurs</a>
+      <a href="projet.html" > Projets</a>
+
+    <a href="ressources-humaines.html" class="active">Ressources Humaines</a>
+  </div>
+  <a href="#demo" class="nav-cta">Demander une démo</a>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="hero-badge"><span class="badge-dot"></span>Module RH</div>
+    <h1>Vos équipes méritent un outil <em>à leur mesure</em></h1>
+    <p>De l'embauche à la fiche de paie, NexaERP centralise toute la gestion de vos collaborateurs. Moins d'administratif, plus d'humain.</p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn-primary">Démarrer gratuitement</a>
+      <a href="#fonctionnalites" class="btn-ghost">Voir les fonctionnalités</a>
+    </div>
+  </div>
+
+  <div class="dashboard-visual">
+    <div class="dash-header">
+      <span class="dash-title">Vue équipe — Décembre</span>
+      <span class="dash-count">148 collaborateurs</span>
+    </div>
+
+    <div class="team-overview">
+      <div class="team-stat">
+        <div class="ts-label">Présents aujourd'hui</div>
+        <div class="ts-value">124</div>
+        <div class="ts-sub">↑ +3 vs lundi</div>
+      </div>
+      <div class="team-stat">
+        <div class="ts-label">Congés en cours</div>
+        <div class="ts-value">14</div>
+        <div class="ts-sub">dont 6 validés</div>
+      </div>
+      <div class="team-stat">
+        <div class="ts-label">Fiches de paie</div>
+        <div class="ts-value">148</div>
+        <div class="ts-sub">✓ Prêtes à envoyer</div>
+      </div>
+      <div class="team-stat">
+        <div class="ts-label">Recrutements ouverts</div>
+        <div class="ts-value">5</div>
+        <div class="ts-sub">3 entretiens ce mois</div>
+      </div>
+    </div>
+
+    <div class="employee-list">
+      <div class="employee-row">
+        <div class="emp-avatar" style="background:#00C2A8">AM</div>
+        <div class="emp-info">
+          <div class="emp-name">Amélie Martin</div>
+          <div class="emp-role">Chef de projet logistique</div>
+        </div>
+        <span class="emp-status status-present">Présent</span>
+      </div>
+      <div class="employee-row">
+        <div class="emp-avatar" style="background:#818CF8">KD</div>
+        <div class="emp-info">
+          <div class="emp-name">Kofi Diallo</div>
+          <div class="emp-role">Développeur backend</div>
+        </div>
+        <span class="emp-status status-remote">Télétravail</span>
+      </div>
+      <div class="employee-row">
+        <div class="emp-avatar" style="background:#F59E0B">SR</div>
+        <div class="emp-info">
+          <div class="emp-name">Sofia Rakoto</div>
+          <div class="emp-role">Responsable comptable</div>
+        </div>
+        <span class="emp-status status-conge">Congé</span>
+      </div>
+    </div>
+
+    <div class="payroll-summary">
+      <span class="ps-label">Masse salariale brute — Déc.</span>
+      <span class="ps-val">312 480 €</span>
+    </div>
+  </div>
+</div>
+
+<div class="kpi-band">
+  <div class="kpi-item">
+    <div class="kpi-number">−70%</div>
+    <div class="kpi-desc">Temps de traitement des paies</div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-number">100%</div>
+    <div class="kpi-desc">Conformité droit du travail</div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-number">+40%</div>
+    <div class="kpi-desc">Satisfaction collaborateurs</div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-number">50K+</div>
+    <div class="kpi-desc">Fiches de paie générées / mois</div>
+  </div>
+</div>
+
+<div class="section" id="fonctionnalites">
+  <div class="section-label">Fonctionnalités clés</div>
+  <div class="section-title">Toute la RH dans un seul endroit</div>
+  <p class="section-desc">Un outil pensé pour les RH qui veulent se concentrer sur les personnes, pas sur la paperasse.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">👤</div>
+      <h3>Dossiers collaborateurs</h3>
+      <p>Centralisez contrats, documents et historique de chaque employé dans un espace sécurisé et accessible.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💰</div>
+      <h3>Paie automatisée</h3>
+      <p>Calculez les bulletins en un clic. Cotisations, primes et retenues appliquées selon les règles en vigueur.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🗓️</div>
+      <h3>Congés & absences</h3>
+      <p>Workflow de validation en ligne, suivi des soldes en temps réel, synchro avec le planning d'équipe.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>Suivi des performances</h3>
+      <p>Entretiens annuels, objectifs SMART et feedbacks continus intégrés dans le profil de chaque collaborateur.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>Recrutement</h3>
+      <p>ATS intégré : publiez vos offres, suivez les candidatures et planifiez les entretiens sans quitter NexaERP.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📚</div>
+      <h3>Formation & montée en compétences</h3>
+      <p>Planifiez les formations, suivez les certifications et anticipez les besoins en compétences à 12 mois.</p>
+    </div>
+  </div>
+</div>
+
+<div class="workflow-section">
+  <div class="workflow-inner">
+    <div class="section-label">Processus RH</div>
+    <div class="section-title">De l'onboarding à la paie, sans friction</div>
+    <div class="workflow-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Recrutement</h4>
+        <p>Publiez, suivez et sélectionnez vos candidats depuis un tableau de bord unifié.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Onboarding</h4>
+        <p>Dossier créé automatiquement à la signature du contrat. Accès et formations planifiés.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Gestion quotidienne</h4>
+        <p>Congés, présences, performances — tout centralisé et accessible en self-service.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Paie & reporting</h4>
+        <p>Bulletins générés et envoyés. Tableaux RH prêts pour la direction et les audits.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Nexa<span>ERP</span></div>
+  <div style="display:flex;gap:2rem">
+    <a href="stock.html" style="color:var(--slate);text-decoration:none;font-size:0.8rem">Stock</a>
+    <a href="comptabilite.html" style="color:var(--slate);text-decoration:none;font-size:0.8rem">Comptabilité</a>
+    <a href="ressources-humaines.html" style="color:var(--teal);text-decoration:none;font-size:0.8rem">RH</a>
+  </div>
+  <div class="footer-copy">© 2025 NexaERP. Tous droits réservés.</div>
+</footer>
+
+</body>
+</html>

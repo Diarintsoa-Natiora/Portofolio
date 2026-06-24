@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexaERP — Gestion de projets</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --teal: #00C2A8;
+      --teal-bg: rgba(0, 194, 168, 0.08);
+      --dark: #0F172A;
+      --slate: #64748B;
+      --light: #F8FAFC;
+      --border: #E2E8F0;
+      --white: #FFFFFF;
+      --red: #EF4444;
+      --red-bg: rgba(239, 68, 68, 0.08);
+      --amber: #F59E0B;
+      --amber-bg: rgba(245, 158, 11, 0.08);
+      --green: #10B981;
+      --green-bg: rgba(16, 185, 129, 0.08);
+      --indigo: #6366F1;
+      --indigo-bg: rgba(99, 102, 241, 0.08);
+      --purple: #8B5CF6;
+      --purple-bg: rgba(139, 92, 246, 0.08);
+      --pink: #EC4899;
+      --pink-bg: rgba(236, 72, 153, 0.08);
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--light);
+      color: var(--dark);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+    }
+    .layout {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 50;
+    }
+    .sidebar-logo {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Sora', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--dark);
+      text-decoration: none;
+      display: block;
+    }
+    .sidebar-logo span {
+      color: var(--teal);
+    }
+    .sidebar-nav {
+      padding: 1rem 0.75rem;
+      flex: 1;
+    }
+    .nav-section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.5rem 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--slate);
+      text-decoration: none;
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+    .sidebar-nav a:hover {
+      background: var(--light);
+      color: var(--dark);
+    }
+    .sidebar-nav a.active {
+      background: var(--teal-bg);
+      color: var(--teal);
+      font-weight: 600;
+    }
+    .sidebar-nav a .icon {
+      font-size: 1rem;
+      width: 20px;
+      text-align: center;
+    }
+    .sidebar-bottom {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      border-radius: 8px;
+      background: var(--light);
+    }
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .user-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .user-role {
+      font-size: 0.7rem;
+      color: var(--slate);
+    }
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    .topbar-title {
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .topbar-date {
+      font-size: 0.8rem;
+      color: var(--slate);
+    }
+    .btn {
+      padding: 0.5rem 1.1rem;
+      border-radius: 7px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #00A896;
+    }
+    .btn-outline {
+      background: white;
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      background: var(--light);
+    }
+    .btn-danger {
+      background: var(--red);
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+    .page-body {
+      padding: 2rem;
+      flex: 1;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .kpi-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+    }
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--slate);
+      margin-bottom: 0.5rem;
+    }
+    .kpi-val {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--dark);
+    }
+    .kpi-change {
+      font-size: 0.72rem;
+      margin-top: 0.3rem;
+    }
+    .up {
+      color: var(--green);
+    }
+    .down {
+      color: var(--red);
+    }
+    .neutral {
+      color: var(--slate);
+    }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .card-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .filter-bar {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.5rem 0.875rem;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 0.825rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--dark);
+      outline: none;
+      background: var(--light);
+    }
+    .search-input:focus {
+      border-color: var(--teal);
+      background: white;
+    }
+    .filter-select {
+      padding: 0.5rem 0.875rem;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 0.825rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--dark);
+      background: var(--light);
+      outline: none;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead th {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--light);
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      white-space: nowrap;
+    }
+    thead th.sort {
+      cursor: pointer;
+    }
+    thead th.sort:hover {
+      color: var(--teal);
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.1s;
+    }
+    tbody tr:last-child {
+      border: none;
+    }
+    tbody tr:hover {
+      background: #FAFBFC;
+    }
+    tbody td {
+      padding: 0.85rem 1.25rem;
+      font-size: 0.825rem;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+    .td-muted {
+      color: var(--slate);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .badge::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .badge-green {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+    .badge-red {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+    .badge-amber {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+    .badge-indigo {
+      background: var(--indigo-bg);
+      color: var(--indigo);
+    }
+    .badge-purple {
+      background: var(--purple-bg);
+      color: var(--purple);
+    }
+    .badge-pink {
+      background: var(--pink-bg);
+      color: var(--pink);
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .summary-list {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .sum-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: var(--light);
+      border-radius: 8px;
+    }
+    .sum-label {
+      font-size: 0.8rem;
+      color: var(--slate);
+    }
+    .sum-val {
+      font-family: 'Sora', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--border);
+      border-radius: 4px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: var(--teal);
+      transition: width 0.3s;
+    }
+    .pagination {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .pagination-info {
+      font-size: 0.8rem;
+      color: var(--slate);
+      flex: 1;
+    }
+    .pagination-btns {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .pg-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dark);
+    }
+    .pg-btn:hover {
+      background: var(--light);
+    }
+    .pg-btn.active {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal);
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      border-radius: 14px;
+      width: 500px;
+      max-width: 90vw;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title {
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--dark);
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: var(--slate);
+    }
+    .modal-body {
+      padding: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.1rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.4rem;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.6rem 0.875rem;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 0.825rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--dark);
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--teal);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--dark);
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 500;
+      z-index: 300;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    .toast.show {
+      display: flex;
+    }
+    @media (max-width: 900px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+      }
+      .kpi-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="modal-overlay" id="addModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">📌 Nouveau projet</span>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Nom du projet</label>
+          <input class="form-input" id="f-nom" placeholder="Projet Alpha" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Client</label>
+            <input class="form-input" id="f-client" placeholder="Client SARL" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chef de projet</label>
+            <input class="form-input" id="f-chef" placeholder="Jean Dupont" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Statut</label>
+            <select class="form-input" id="f-statut">
+              <option>En cours</option>
+              <option>Planifié</option>
+              <option>Terminé</option>
+              <option>En pause</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Priorité</label>
+            <select class="form-input" id="f-priorite">
+              <option>Haute</option>
+              <option>Moyenne</option>
+              <option>Basse</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Budget (€)</label>
+            <input class="form-input" id="f-budget" type="number" placeholder="50000" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Avancement (%)</label>
+            <input class="form-input" id="f-avancement" type="number" min="0" max="100" placeholder="0" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal()">Annuler</button>
+        <button class="btn btn-primary" onclick="addProjet()">Créer le projet</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <div class="layout">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">Nexa<span>ERP</span></a>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Modules</div>
+        <a href="#"><span class="icon">📦</span> Stocks</a>
+        <a href="#"><span class="icon">📒</span> Comptabilité</a>
+        <a href="#"><span class="icon">👥</span> Utilisateurs</a>
+      <a href="ressources-humaines.html"><span class="icon">💼</span> Ressources Humaines</a>
+        <a href="#" class="active"><span class="icon">📌</span> Projets</a>
+      
+        <div class="nav-section-label">Gestion</div>
+        <a href="#"><span class="icon">📋</span> Tâches</a>
+        <a href="#"><span class="icon">📊</span> Rapports</a>
+        <a href="#"><span class="icon">⚙️</span> Paramètres</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="user-pill">
+          <div class="user-avatar">PM</div>
+          <div>
+            <div class="user-name">Pierre Martin</div>
+            <div class="user-role">Chef de projet</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">📌 Gestion de projets</span>
+        <div class="topbar-right">
+          <span class="topbar-date" id="today-date"></span>
+          <button class="btn btn-outline" onclick="exportCSV()">⬇ Export CSV</button>
+          <button class="btn btn-primary" onclick="openModal()">+ Nouveau projet</button>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label">Total projets</div>
+            <div class="kpi-val" id="k-total">—</div>
+            <div class="kpi-change neutral">Actifs & terminés</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">En cours</div>
+            <div class="kpi-val up" id="k-encours">—</div>
+            <div class="kpi-change neutral">Projets actifs</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Budget total</div>
+            <div class="kpi-val" id="k-budget" style="color:var(--indigo)">—</div>
+            <div class="kpi-change neutral">Cumul alloué</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Avancement moyen</div>
+            <div class="kpi-val" id="k-avancement" style="color:var(--purple)">—</div>
+            <div class="kpi-change neutral">Tous projets</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header"><span class="card-title">📊 Répartition par statut</span></div>
+            <div class="summary-list">
+              <div class="sum-item"><span class="sum-label">✅ En cours</span><span class="sum-val up" id="stat-encours">—</span></div>
+              <div class="sum-item"><span class="sum-label">📅 Planifié</span><span class="sum-val" id="stat-planifie" style="color:var(--indigo)">—</span></div>
+              <div class="sum-item"><span class="sum-label">⏸️ En pause</span><span class="sum-val" id="stat-pause" style="color:var(--amber)">—</span></div>
+              <div class="sum-item"><span class="sum-label">🏁 Terminé</span><span class="sum-val down" id="stat-termine">—</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">🏷️ Priorités</span></div>
+            <div class="summary-list">
+              <div class="sum-item"><span class="sum-label">🔴 Haute</span><span class="sum-val down" id="prio-haute">—</span></div>
+              <div class="sum-item"><span class="sum-label">🟡 Moyenne</span><span class="sum-val" id="prio-moyenne" style="color:var(--amber)">—</span></div>
+              <div class="sum-item"><span class="sum-label">🟢 Basse</span><span class="sum-val up" id="prio-basse">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📋 Liste des projets</span>
+          </div>
+          <div class="filter-bar">
+            <input class="search-input" id="search" placeholder="🔍  Rechercher projet, client, chef…" oninput="renderTable()" />
+            <select class="filter-select" id="f-statut-filter" onchange="renderTable()">
+              <option value="">Tous statuts</option>
+              <option>En cours</option>
+              <option>Planifié</option>
+              <option>Terminé</option>
+              <option>En pause</option>
+            </select>
+            <select class="filter-select" id="f-priorite-filter" onchange="renderTable()">
+              <option value="">Toutes priorités</option>
+              <option>Haute</option>
+              <option>Moyenne</option>
+              <option>Basse</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th class="sort" onclick="sortBy('nom')">Projet ↕</th>
+                  <th class="sort" onclick="sortBy('client')">Client ↕</th>
+                  <th>Chef de projet</th>
+                  <th class="sort" onclick="sortBy('statut')">Statut ↕</th>
+                  <th class="sort" onclick="sortBy('priorite')">Priorité ↕</th>
+                  <th class="sort" onclick="sortBy('budget')">Budget ↕</th>
+                  <th>Avancement</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span class="pagination-info" id="pagination-info"></span>
+            <div class="pagination-btns" id="pagination-btns"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let projets = [
+      { nom: 'Refonte site e-commerce', client: 'TechShop SARL', chef: 'Alice Martin', statut: 'En cours', priorite: 'Haute',
+        budget: 45000, avancement: 70 },
+      { nom: 'Migration cloud AWS', client: 'DataCorp', chef: 'Thomas Dubois', statut: 'Planifié', priorite: 'Haute',
+        budget: 62000, avancement: 10 },
+      { nom: 'Application mobile banking', client: 'FinBank', chef: 'Marie Curie', statut: 'En cours', priorite: 'Moyenne',
+        budget: 78000, avancement: 45 },
+      { nom: 'Dashboard analytics', client: 'MedTech', chef: 'Jean Dupont', statut: 'Terminé', priorite: 'Basse', budget: 28000,
+        avancement: 100 },
+      { nom: 'Sécurité réseau', client: 'SecureSoft', chef: 'Sophie Bernard', statut: 'En pause', priorite: 'Haute',
+        budget: 52000, avancement: 30 },
+      { nom: 'Plateforme RH', client: 'HR Solutions', chef: 'Lucas Morel', statut: 'En cours', priorite: 'Moyenne',
+        budget: 41000, avancement: 60 },
+      { nom: 'Refonte ERP interne', client: 'Nexa Group', chef: 'Élise Laurent', statut: 'Planifié', priorite: 'Haute',
+        budget: 95000, avancement: 5 },
+      { nom: 'Campagne marketing digitale', client: 'BrandUp', chef: 'Adrien Lefèvre', statut: 'Terminé', priorite: 'Basse',
+        budget: 22000, avancement: 100 },
+      { nom: 'IoT capteurs intelligents', client: 'SensorTech', chef: 'Claire Petit', statut: 'En cours', priorite: 'Moyenne',
+        budget: 67000, avancement: 35 },
+      { nom: 'Plateforme e-learning', client: 'EduConnect', chef: 'David Roux', statut: 'En pause', priorite: 'Basse',
+        budget: 38000, avancement: 50 },
+      { nom: 'Blockchain supply chain', client: 'ChainLog', chef: 'Camille Garcia', statut: 'Planifié', priorite: 'Haute',
+        budget: 88000, avancement: 0 },
+      { nom: 'Assistant vocal IA', client: 'VoiceAI', chef: 'Julien Simon', statut: 'En cours', priorite: 'Moyenne',
+        budget: 54000, avancement: 25 },
+    ];
+
+    let sortKey = null,
+      sortDir = 1,
+      currentPage = 1;
+    const PER_PAGE = 8;
+
+    function getFiltered() {
+      let data = [...projets];
+      const s = document.getElementById('search').value.toLowerCase();
+      const st = document.getElementById('f-statut-filter').value;
+      const pr = document.getElementById('f-priorite-filter').value;
+      if (s) data = data.filter(p => p.nom.toLowerCase().includes(s) || p.client.toLowerCase().includes(s) || p.chef
+        .toLowerCase().includes(s));
+      if (st) data = data.filter(p => p.statut === st);
+      if (pr) data = data.filter(p => p.priorite === pr);
+      if (sortKey) data.sort((a, b) => { let va = a[sortKey],
+          vb = b[sortKey]; return (va > vb ? 1 : va < vb ? -1 : 0) * sortDir; });
+      return data;
+    }
+
+    function renderTable() {
+      const data = getFiltered();
+      const pages = Math.max(1, Math.ceil(data.length / PER_PAGE));
+      if (currentPage > pages) currentPage = 1;
+      const slice = data.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = slice.length ? slice.map((p, i) => {
+        const badgeStatut = p.statut === 'En cours' ? '<span class="badge badge-green">En cours</span>' :
+          p.statut === 'Planifié' ? '<span class="badge badge-indigo">Planifié</span>' :
+          p.statut === 'Terminé' ? '<span class="badge badge-red">Terminé</span>' :
+          '<span class="badge badge-amber">En pause</span>';
+        const badgePrio = p.priorite === 'Haute' ? '<span class="badge badge-red">Haute</span>' :
+          p.priorite === 'Moyenne' ? '<span class="badge badge-amber">Moyenne</span>' :
+          '<span class="badge badge-green">Basse</span>';
+        const globalIndex = projets.indexOf(p);
+        const progressColor = p.avancement >= 80 ? 'var(--green)' : p.avancement >= 40 ? 'var(--amber)' : 'var(--red)';
+        return `<tr>
+          <td style="font-weight:600;">${p.nom}</td>
+          <td class="td-muted">${p.client}</td>
+          <td class="td-muted">${p.chef}</td>
+          <td>${badgeStatut}</td>
+          <td>${badgePrio}</td>
+          <td class="td-mono" style="font-weight:600;">${new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(p.budget)}</td>
+          <td>
+            <span style="font-size:0.75rem;font-weight:600;">${p.avancement}%</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:${p.avancement}%;background:${progressColor};"></div></div>
+          </td>
+          <td>
+            <button class="btn btn-outline" style="padding:0.3rem 0.6rem;font-size:0.75rem;color:var(--red);border-color:rgba(239,68,68,0.2)" onclick="deleteProjet(${globalIndex})">✕</button>
+          </td>
+        </tr>`;
+      }).join('') : `<tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--slate)">Aucun projet</td></tr>`;
+
+      document.getElementById('pagination-info').textContent = `${data.length} projets — page ${currentPage}/${pages}`;
+      const btns = document.getElementById('pagination-btns');
+      btns.innerHTML = '';
+      for (let p = 1; p <= pages; p++) {
+        const b = document.createElement('button');
+        b.className = 'pg-btn' + (p === currentPage ? ' active' : '');
+        b.textContent = p;
+        b.onclick = () => { currentPage = p;
+          renderTable() };
+        btns.appendChild(b);
+      }
+      updateKPIs();
+    }
+
+    function updateKPIs() {
+      const total = projets.length;
+      const encours = projets.filter(p => p.statut === 'En cours').length;
+      const budgetTotal = projets.reduce((s, p) => s + p.budget, 0);
+      const avgAvancement = Math.round(projets.reduce((s, p) => s + p.avancement, 0) / total);
+      document.getElementById('k-total').textContent = total;
+      document.getElementById('k-encours').textContent = encours;
+      document.getElementById('k-budget').textContent = new Intl.NumberFormat('fr-FR', { style: 'currency',
+        currency: 'EUR' }).format(budgetTotal);
+      document.getElementById('k-avancement').textContent = avgAvancement + '%';
+
+      document.getElementById('stat-encours').textContent = encours;
+      document.getElementById('stat-planifie').textContent = projets.filter(p => p.statut === 'Planifié').length;
+      document.getElementById('stat-pause').textContent = projets.filter(p => p.statut === 'En pause').length;
+      document.getElementById('stat-termine').textContent = projets.filter(p => p.statut === 'Terminé').length;
+
+      document.getElementById('prio-haute').textContent = projets.filter(p => p.priorite === 'Haute').length;
+      document.getElementById('prio-moyenne').textContent = projets.filter(p => p.priorite === 'Moyenne').length;
+      document.getElementById('prio-basse').textContent = projets.filter(p => p.priorite === 'Basse').length;
+    }
+
+    function sortBy(key) {
+      if (sortKey === key) sortDir *= -1;
+      else { sortKey = key;
+        sortDir = 1; }
+      renderTable();
+    }
+
+    function openModal() {
+      document.getElementById('addModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('addModal').classList.remove('open');
+    }
+    document.getElementById('addModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal() });
+
+    function addProjet() {
+      const nom = document.getElementById('f-nom').value.trim();
+      const client = document.getElementById('f-client').value.trim() || 'Client inconnu';
+      const chef = document.getElementById('f-chef').value.trim() || 'Non assigné';
+      const statut = document.getElementById('f-statut').value;
+      const priorite = document.getElementById('f-priorite').value;
+      const budget = parseFloat(document.getElementById('f-budget').value) || 0;
+      const avancement = Math.min(100, Math.max(0, parseInt(document.getElementById('f-avancement').value) || 0));
+      if (!nom) { showToast('Nom du projet obligatoire', false); return; }
+      projets.unshift({ nom, client, chef, statut, priorite, budget, avancement });
+      closeModal();
+      ['f-nom', 'f-client', 'f-chef', 'f-budget', 'f-avancement'].forEach(id => document.getElementById(id).value = '');
+      renderTable();
+      showToast('Projet créé ✓');
+    }
+
+    function deleteProjet(i) {
+      if (!confirm('Supprimer ce projet ?')) return;
+      projets.splice(i, 1);
+      renderTable();
+      showToast('Projet supprimé');
+    }
+
+    function exportCSV() {
+      const rows = [
+        ['Nom', 'Client', 'Chef de projet', 'Statut', 'Priorité', 'Budget', 'Avancement']
+      ];
+      projets.forEach(p => rows.push([p.nom, p.client, p.chef, p.statut, p.priorite, p.budget, p.avancement + '%']));
+      const csv = rows.map(r => r.join(';')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const lnk = document.createElement('a');
+      lnk.href = url;
+      lnk.download = 'projets_nexa.csv';
+      lnk.click();
+      showToast('Export CSV téléchargé');
+    }
+
+    function showToast(msg, ok = true) {
+      const t = document.getElementById('toast');
+      t.textContent = (ok ? '✓ ' : '⚠ ') + msg;
+      t.style.background = ok ? '#0F172A' : 'var(--red)';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric',
+      month: 'long', year: 'numeric' });
+    renderTable();
+  </script>
+</body>
+</html>
