@@ -1,0 +1,24 @@
+# voici la liste des societes:
+  - Toyota By CFAO Ankorondrano
+  - Henri Fraise FIls & CIE
+  - Mater Auto
+  - Codal 
+  - Radissun Blu
+  - MVOLA , (dans atrium, dans le "the bureau ankorondrano")
+  - Groupe Sipromad
+  - Orange Magascar (celui base a akorondrano)
+  - Ericsson Madagascar
+  - Sodirex (celle base dans Carrefour)
+  - DHL express Madagscar
+  - AFG Bank
+  - BMOI 
+  - BGFI
+  - Spoon
+  - CFAO Mobility
+  - Corsair
+  - SanlamAllianz Assurance Madagascar
+  - E-Tech COnsulting
+  - PAMF
+  - ABC Bricorama
+  - Teknet Group
+  - Konnecta
