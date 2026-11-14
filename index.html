@@ -10,7 +10,6 @@
 <title>ANDRIANASOLO Natiora | Développeur Full Stack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="chemin-vers-ton-logo.svg">
 <style>
 /* ============================================================
    DESIGN TOKENS
@@ -61,15 +60,15 @@
 
 [data-theme="light"] .lang-toggle,
 [data-theme="light"] .btn-icon {
+  background: #FFFFFF;
+  border-color: rgba(108,99,255,0.25);
   color: var(--text-primary);
-  background: rgba(255,255,255,0.9);
-  border-color: rgba(15,23,42,0.12);
 }
-
 
 [data-theme="light"] .lang-toggle:hover,
 [data-theme="light"] .btn-icon:hover {
-  background: rgba(255,255,255,1);
+  background: var(--bg-card-hover);
+  border-color: var(--accent-violet);
 }
 
 [data-theme="light"] .mobile-menu {
@@ -105,12 +104,12 @@ img { max-width: 100%; }
 ::-webkit-scrollbar-thumb { background: var(--accent-violet); border-radius: 3px; }
 
 /* ============================================================
-   NAVBAR
+   NAVBAR & CONTROLS
    ============================================================ */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 0 2rem;
-  height: 70px;
+  padding: 0 5%;
+  height: 75px;
   display: flex; align-items: center; justify-content: space-between;
   background: rgba(10,15,30,0.85);
   backdrop-filter: blur(20px);
@@ -120,13 +119,29 @@ img { max-width: 100%; }
 [data-theme="light"] .navbar { background: rgba(248,250,255,0.9); }
 
 .nav-logo {
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: var(--accent-mint);
-  letter-spacing: -0.02em;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.nav-logo span { color: var(--accent-violet); }
+
+.nav-logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.nav-logo:hover {
+  transform: scale(1.08);
+}
+
+.nav-logo:hover svg {
+  stroke: var(--accent-violet);
+}
 
 .nav-links {
   display: flex; gap: 2rem; list-style: none;
@@ -147,34 +162,46 @@ img { max-width: 100%; }
 .nav-links a:hover { color: var(--text-primary); }
 .nav-links a:hover::after { transform: scaleX(1); }
 
-.nav-controls { display: flex; gap: 0.75rem; align-items: center; }
+.nav-controls { 
+  display: flex; 
+  gap: 0.75rem; 
+  align-items: center; 
+}
 
-.btn-icon {
-  width: 38px; height: 38px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 8px;
+.lang-toggle, .btn-icon {
+  height: 40px;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  border-radius: 10px;
   border: 1px solid var(--border);
-  background: var(--accent-violet-dim);
+  background: var(--bg-card);
   cursor: pointer;
   transition: var(--transition);
   color: var(--text-primary);
-  font-size: 1rem;
 }
-.btn-icon:hover { border-color: var(--accent-violet); box-shadow: var(--glow-violet); }
 
 .lang-toggle {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--accent-violet-dim);
-  cursor: pointer;
-  color: var(--accent-violet);
-  transition: var(--transition);
+  font-weight: 600;
+  padding: 0 0.85rem;
+  gap: 8px;
 }
-.lang-toggle:hover { border-color: var(--accent-violet); }
+
+.btn-icon {
+  width: 40px;
+}
+
+.lang-toggle:hover, .btn-icon:hover { 
+  border-color: var(--accent-violet); 
+  box-shadow: var(--glow-violet); 
+  transform: translateY(-2px);
+}
+
+.flag {
+  font-size: 1.2rem;
+}
 
 .hamburger {
   display: none; flex-direction: column; gap: 5px;
@@ -220,7 +247,6 @@ img { max-width: 100%; }
   gap: 4rem; align-items: center;
 }
 
-.hero-left {}
 .hero-tag {
   display: inline-flex; align-items: center; gap: 0.5rem;
   font-family: var(--font-mono); font-size: 0.75rem;
@@ -319,7 +345,7 @@ img { max-width: 100%; }
 .dot-yellow { background: #FFBD2E; }
 .dot-green { background: #28C840; }
 .terminal-title { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-left: auto; }
-.terminal-body { padding: 1.25rem; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.8; min-height: 220px; }
+.terminal-body { padding: 1.25rem; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.8; min-height: 220px; color: #E1E4E8; }
 .t-comment { color: #6A737D; }
 .t-key { color: #79B8FF; }
 .t-string { color: #9ECBFF; }
@@ -369,35 +395,36 @@ section { padding: 6rem 2rem; }
 #about { background: var(--bg-secondary); }
 .about-grid {
   display: grid; grid-template-columns: 1fr 2fr;
-  gap: 4rem; align-items: start;
+  gap: 4rem; align-items: center;
 }
 .about-avatar {
+  display: flex;
+  justify-content: center;
   position: relative;
+  padding-bottom: 20px;
 }
 .avatar-img {
   width: 100%;
+  max-width: 320px;
+  height: auto;
   aspect-ratio: 1;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--accent-violet-dim), var(--accent-mint-dim));
+  object-fit: contain; /* Modifié : affiche toute l'image sans couper */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
   border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 5rem;
-  position: relative;
-  overflow: hidden;
+  background: var(--bg-card);
+  transition: transform 0.4s ease;
 }
-.avatar-img::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(108,99,255,0.1), rgba(0,212,170,0.1));
-}
+.avatar-img:hover { transform: scale(1.04); }
 .avatar-badge {
-  position: absolute; bottom: -10px; right: -10px;
+  position: absolute; bottom: 0; right: 20px;
   background: var(--accent-mint);
   color: #0A0F1E;
   font-family: var(--font-mono);
   font-size: 0.7rem; font-weight: 600;
   padding: 0.4rem 0.75rem;
   border-radius: 100px;
+  box-shadow: 0 4px 15px rgba(0,212,170,0.3);
 }
 
 .about-text p {
@@ -430,7 +457,6 @@ section { padding: 6rem 2rem; }
 /* ============================================================
    EDUCATION
    ============================================================ */
-#education {}
 .timeline { position: relative; padding-left: 2rem; }
 .timeline::before {
   content: ''; position: absolute;
@@ -485,8 +511,9 @@ section { padding: 6rem 2rem; }
    ============================================================ */
 #skills { background: var(--bg-secondary); }
 .skills-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.75rem;
+  margin-top: 1.5rem;
 }
 .skill-category {
   background: var(--bg-card);
@@ -500,38 +527,39 @@ section { padding: 6rem 2rem; }
   box-shadow: var(--glow-violet);
   transform: translateY(-3px);
 }
-.category-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+.category-icon { font-size: 1.8rem; margin-bottom: 0.75rem; text-align: center; }
 .category-name {
   font-family: var(--font-display); font-weight: 600;
-  font-size: 1rem; margin-bottom: 1rem;
-  color: var(--text-primary);
+  font-size: 1.1rem; margin-bottom: 1.25rem;
+  color: var(--text-primary); text-align: center;
 }
-.skills-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.skill-badge {
-  font-family: var(--font-mono); font-size: 0.75rem;
-  padding: 0.3rem 0.65rem;
-  border-radius: 6px;
-  border: 1px solid;
+.skills-logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 1rem 0.75rem;
+}
+.skill-item {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 6px; padding: 8px 4px; border-radius: 10px;
   transition: var(--transition);
-  cursor: default;
 }
-.skill-badge.violet {
-  background: var(--accent-violet-dim);
-  border-color: rgba(108,99,255,0.3);
-  color: #a29bfe;
+.skill-item:hover {
+  background: var(--bg-card-hover);
+  transform: scale(1.06);
 }
-.skill-badge.mint {
-  background: var(--accent-mint-dim);
-  border-color: rgba(0,212,170,0.3);
-  color: var(--accent-mint);
+.skills-logos img {
+  width: 40px; height: 40px; object-fit: contain;
 }
-.skill-badge.violet:hover { background: var(--accent-violet); color: #fff; }
-.skill-badge.mint:hover { background: var(--accent-mint); color: #0A0F1E; }
+.skill-name {
+  font-size: 0.8rem; font-weight: 600; color: var(--text-primary); line-height: 1.1;
+}
+.skill-level {
+  font-size: 0.85rem; color: #ffd700; letter-spacing: 1px;
+}
 
 /* ============================================================
    PROJECTS
    ============================================================ */
-#projects {}
 .projects-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.75rem;
@@ -556,18 +584,11 @@ section { padding: 6rem 2rem; }
   position: relative; overflow: hidden;
   background-size: cover;
   background-position: center;
-  background-color: rgba(255,255,255,0.04);
+  background-color: var(--bg-secondary);
 }
-.project-thumb::before {
-  content: ''; position: absolute; inset: 0;
-  opacity: 0; transition: var(--transition);
-  background: rgba(10,15,30,0.35);
-}
-.project-card:hover .project-thumb::before { opacity: 1; }
 .project-thumb::after {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: linear-gradient(180deg, transparent 0%, rgba(10,15,30,0.6) 70%);
 }
 
@@ -578,7 +599,7 @@ section { padding: 6rem 2rem; }
 }
 .project-name {
   font-family: var(--font-display); font-weight: 700;
-  font-size: 1.1rem; margin-bottom: 0.75rem;
+  font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--text-primary);
 }
 .project-desc {
   font-size: 0.875rem; color: var(--text-secondary);
@@ -604,7 +625,7 @@ section { padding: 6rem 2rem; }
 .btn-detail:hover { gap: 0.75rem; }
 
 /* ============================================================
-   PROJECT MODAL
+   MODALS (PROJECTS & IMAGES)
    ============================================================ */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 2000;
@@ -650,7 +671,7 @@ section { padding: 6rem 2rem; }
 
 .modal-body { padding: 2rem; }
 .modal-role { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-mint); margin-bottom: 0.5rem; }
-.modal-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+.modal-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary); }
 .modal-duration { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1.5rem; }
 .modal-section { margin-bottom: 1.75rem; }
 .modal-section-title {
@@ -666,21 +687,29 @@ section { padding: 6rem 2rem; }
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
 }
-.gallery-img {
-  aspect-ratio: 4/3; border-radius: 8px;
-  background: var(--bg-secondary);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem;
+.gallery-item img {
+  width: 100%; height: 160px; object-fit: cover;
+  border-radius: 8px; cursor: pointer;
   border: 1px solid var(--border);
-  overflow: hidden; position: relative;
+  transition: transform .3s ease;
 }
-.gallery-img span {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  position: absolute; bottom: 4px; left: 0; right: 0;
-  text-align: center;
+.gallery-item img:hover { transform: scale(1.03); }
+.gallery-item p {
+  font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono);
+  text-align: center; margin-top: 4px;
 }
+
+.image-modal {
+  display: none; position: fixed; z-index: 9999; inset: 0;
+  background: rgba(0,0,0,0.9);
+  justify-content: center; align-items: center; padding: 20px;
+}
+.image-modal-content { max-width: 90%; max-height: 90%; border-radius: 10px; object-fit: contain; }
+.image-close {
+  position: absolute; top: 20px; right: 30px;
+  color: white; font-size: 40px; cursor: pointer;
+}
+
 .modal-tech { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .modal-list { list-style: none; }
 .modal-list li {
@@ -710,7 +739,7 @@ footer {
 }
 .footer-brand-name {
   font-family: var(--font-display); font-size: 1.1rem;
-  font-weight: 700; margin-bottom: 0.5rem;
+  font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);
 }
 .footer-brand-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
 .footer-col h4 {
@@ -729,13 +758,12 @@ footer {
   flex-wrap: wrap; gap: 1rem;
 }
 .footer-copy { font-size: 0.8rem; color: var(--text-muted); }
-.footer-socials { display: flex; gap: 0.75rem; }
 
 /* ============================================================
    MOBILE MENU
    ============================================================ */
 .mobile-menu {
-  position: fixed; top: 70px; left: 0; right: 0;
+  position: fixed; top: 75px; left: 0; right: 0;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
   padding: 1.5rem 2rem;
@@ -749,440 +777,47 @@ footer {
 .mobile-menu ul li a { display: block; padding: 0.875rem 0; color: var(--text-secondary); font-weight: 500; transition: var(--transition); }
 .mobile-menu ul li a:hover { color: var(--accent-violet); }
 
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  margin-top: 35px;
-}
-
-.skill-category {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 16px;
-  padding: 20px 15px;
-  transition: transform 0.3s ease;
-}
-
-.skill-category:hover {
-  transform: translateY(-5px);
-}
-
-.category-icon {
-  font-size: 2.2rem;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.category-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.skills-logos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
-  gap: 14px 10px;
-}
-
-.skill-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 6px;
-  padding: 8px 4px;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.skill-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: scale(1.06);
-}
-
-.skills-logos img {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-.skill-name {
-  font-size: 0.83rem;
-  font-weight: 600;
-  line-height: 1.1;
-}
-
-.skill-level {
-  font-size: 1rem;
-  color: #ffd700;
-  letter-spacing: 1.5px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .skills-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
-}
-
-@media (max-width: 480px) {
-  .skills-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.about-avatar {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  padding-bottom: 20px; /* Espace pour le badge */
-}
-
-.avatar-img {
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  border-radius: 12px;
-  object-fit: contain;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
-  transition: transform 0.4s ease;
-  background: #1a1a2e;
-}
-
-.avatar-img:hover {
-  transform: scale(1.04);
-}
-
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.2rem 5%;
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.nav-logo {
-  font-size: 1.75rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #fff;
-}
-
-.logo-name {
-  font-family: 'Inter', system-ui, sans-serif;
-  letter-spacing: -1px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 2.2rem;
-  list-style: none;
-}
-
-.nav-links a {
-  color: #ddd;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: #6366f1;
-}
-
-[data-theme="light"] .nav-links a:hover {
-  color: #6366f1;
-}
-
-}
-
-/* Language Button */
-.lang-toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 50px;
-  color: white;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.lang-toggle:hover {
-  background: rgba(255,255,255,0.15);
-  transform: translateY(-2px);
-}
-
-.flag {
-  font-size: 1.4rem;
-}
-
-/* Theme Button */
-.btn-icon {
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 50%;
-  color: white;
-  transition: all 0.3s ease;
-}
-
-.btn-icon:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform .3s ease;
-}
-
-.gallery-item img:hover {
-    transform: scale(1.03);
-}
-
-.image-modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  inset: 0;
-
-  background: rgba(0,0,0,0.9);
-
-  justify-content: center;
-  align-items: center;
-}
-
-.image-modal-content {
-  max-width: 90%;
-  max-height: 90%;
-
-  border-radius: 10px;
-}
-
-.image-close {
-  position: absolute;
-
-  top: 20px;
-  right: 30px;
-
-  color: white;
-
-  font-size: 40px;
-
-  cursor: pointer;
-}
-
-/* Responsive */
+/* ============================================================
+   RESPONSIVE DESIGN
+   ============================================================ */
 @media (max-width: 1024px) {
-  .hero {
-    padding: 100px 1.5rem 3rem;
-  }
-
-  .hero-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .timeline {
-    padding-left: 0.5rem;
-  }
-
-  .timeline-item {
-    padding: 0 0 2rem 0.5rem;
-  }
-
-  .timeline-dot {
-    left: -1.8rem;
-  }
-
-  .modal-gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  .hero-content, .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .modal-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    padding: 0 1rem;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
-  .nav-controls {
-    gap: 0.5rem;
-  }
-
-  .mobile-menu {
-    top: 70px;
-    left: 0;
-    right: 0;
-  }
-
-  .hero {
-    padding-top: 90px;
-  }
-
-  .hero-title {
-    font-size: 0.95rem;
-  }
-
-  .hero-tagline {
-    font-size: 0.9rem;
-  }
-
-  .projects-grid,
-  .skills-grid {
-    gap: 1rem;
-  }
-
-  .project-body {
-    padding: 1rem;
-  }
-
-  .project-card {
-    min-height: auto;
-  }
-
-  .hero-terminal {
-    width: 100%;
-  }
-
-  .projects-grid,
-  .skills-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .modal {
-    max-width: 95%;
-    margin: 0 0.5rem;
-  }
-
-  .modal-body {
-    padding: 1.5rem;
-  }
-
-  .modal-gallery {
-    grid-template-columns: 1fr;
-  }
+  .navbar { padding: 0 1rem; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .modal-gallery { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
 
-@media (max-width: 600px) {
-  .hero {
-    padding: 90px 1rem 2.5rem;
-  }
-
-  .nav-controls {
-    gap: 0.5rem;
-  }
-
-  .lang-toggle {
-    padding: 6px 10px;
-    font-size: 0.75rem;
-  }
-
-  .btn-icon {
-    width: 36px;
-    height: 36px;
-  }
-
-  .project-name {
-    font-size: 1rem;
-  }
-
-  .project-desc {
-    font-size: 0.85rem;
-  }
-
-  .project-tech {
-    gap: 0.35rem;
-  }
-
-  .modal-hero {
-    height: 180px;
-    font-size: 3rem;
-  }
-
-  .gallery-item img {
-    height: 180px;
-  }
-}
-.lang-toggle {
-  display: flex;
-  align-items: center; /* Aligne verticalement le drapeau et le texte */
-  justify-content: center; /* Centre horizontalement si besoin */
-  gap: 6px; /* Espace propre entre le drapeau et le texte */
-  
-  /* Conservez vos styles actuels (padding, background, border, cursor, etc.) */
-}
-.nav-logo {
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nav-logo svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.nav-logo:hover {
-  transform: scale(1.08); /* Petit effet de zoom élégant */
-}
-
-.nav-logo:hover svg {
-  stroke: var(--accent-color, #3b82f6); /* Changement de couleur au survol */
-}
 </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
-
-<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
-  <div class="nav-logo">
-  <img src="svg/DN.svg" alt="Logo Nati">
-</div>
+  <div class="nav-logo" title="Logo Natiora">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+      <style>
+        .logo-stroke {
+          fill: none;
+          stroke: currentColor;
+          stroke-width: 9;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+      </style>
+      <path class="logo-stroke" d="M 45,30 C 135,30 170,70 170,100 C 170,130 135,170 45,170" />
+      <line class="logo-stroke" x1="78" y1="38" x2="78" y2="162" />
+      <line class="logo-stroke" x1="52" y1="72" x2="52" y2="128" />
+      <line class="logo-stroke" x1="104" y1="72" x2="104" y2="128" />
+      <line class="logo-stroke" x1="52" y1="72" x2="104" y2="128" />
+    </svg>
+  </div>
 
   <ul class="nav-links">
     <li><a href="#hero" data-fr="Accueil" data-en="Home">Accueil</a></li>
@@ -1202,9 +837,7 @@ footer {
 
     <!-- Theme Toggle -->
     <button class="btn-icon" onclick="toggleTheme()" title="Changer le thème" id="themeBtn">
-      <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path id="moon" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
+      <!-- Icon filled dynamically via JS -->
     </button>
 
     <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -1243,11 +876,9 @@ footer {
         Je conçois et développe des applications web et des solutions métiers modernes, en créant des fonctionnalités utiles, en assurant une intégration efficace avec les environnements existants et en contribuant à la maintenance ainsi qu'à l'évolution des applications.
       </p>
       <div class="hero-cta">
-        <a href="CV/CV-Diarintsoa-Natiora.pdf"
-        class="btn-primary"
-        download>
-        ⬇ <span data-fr="Télécharger CV" data-en="Download CV">Télécharger CV</span>
-      </a>
+        <a href="CV/CV-Diarintsoa-Natiora.pdf" class="btn-primary" download>
+          ⬇ <span data-fr="Télécharger CV" data-en="Download CV">Télécharger CV</span>
+        </a>
         <a href="#projects" class="btn-outline">
           <span data-fr="Voir mes projets" data-en="See my projects">Voir mes projets</span> →
         </a>
@@ -1267,17 +898,18 @@ footer {
     <div class="hero-right reveal" style="transition-delay:0.15s">
       <div class="hero-terminal">
         <div class="terminal-header">
-          <div class="terminal-dot dot-red"></div>
-          <div class="terminal-dot dot-yellow"></div>
-          <div class="terminal-dot dot-green"></div>
-          <span class="terminal-title">developer.json</span>
-        </div>
+    <div class="terminal-action-left">
+      <span class="terminal-icon">⚡</span>
+      <span class="terminal-title">natiora-profile.json</span>
+    </div>
+    <span class="terminal-env">prod</span>
+  </div>
         <div class="terminal-body" id="terminal">
           <span class="t-bracket">{</span><br>
           &nbsp;&nbsp;<span class="t-key">"name"</span><span class="t-bracket">: </span><span class="t-string">"ANDRIANASOLO Natiora"</span><span class="t-bracket">,</span><br>
           &nbsp;&nbsp;<span class="t-key">"role"</span><span class="t-bracket">: </span><span class="t-string">"Full Stack Developer"</span><span class="t-bracket">,</span><br>
           &nbsp;&nbsp;<span class="t-key">"university"</span><span class="t-bracket">: </span><span class="t-string">"IT University Madagascar"</span><span class="t-bracket">,</span><br>
-          &nbsp;&nbsp;<span class="t-key">"year"</span><span class="t-bracket">: </span><span class="t-number">3</span><span class="t-bracket">,</span><br>
+         &nbsp;&nbsp;<span class="t-key">"level"</span><span class="t-bracket">: </span><span class="t-string">"Bac+3 "</span><span class="t-bracket">,</span><br>
           &nbsp;&nbsp;<span class="t-key">"available"</span><span class="t-bracket">: </span><span class="t-value">true</span><span class="t-bracket">,</span><br>
           &nbsp;&nbsp;<span class="t-key">"location"</span><span class="t-bracket">: </span><span class="t-string">"Madagascar 🇲🇬"</span><br>
           <span class="t-bracket">}</span><span class="t-cursor"></span>
@@ -1288,7 +920,6 @@ footer {
 </section>
 
 <!-- ABOUT -->
-<!-- ABOUT -->
 <section id="about">
   <div class="container">
     <div class="section-label"><span data-fr="À Propos" data-en="About Me">À Propos</span></div>
@@ -1296,23 +927,21 @@ footer {
     <div class="section-divider"></div>
     
     <div class="about-grid reveal">
-      
       <div class="about-avatar">
-        <!-- Remplacez le chemin par celui de votre photo -->
         <img src="image/Profil2.png" alt="Natiora ANDRIANASOLO" class="avatar-img">
         <div class="avatar-badge">BSc Computer Science</div>
       </div>
       
       <div class="about-text">
-      <p data-fr="Développeur logiciel ayant achevé mon cursus de Licence en Informatique à IT University Madagascar, je suis passionné par la création de solutions numériques robustes et à fort impact." data-en="Software developer having completed my Computer Science Bachelor's coursework at IT University Madagascar , I am passionate about building robust, high-impact digital solutions.">
-        Développeur logiciel ayant achevé mon cursus de Licence en Informatique à IT University Madagascar, je suis passionné par la création de solutions numériques robustes et à fort impact.
-      </p>
-      <p data-fr="Mon expertise couvre le développement d'applications web, la conception d'API, l'ingénierie des bases de données et l'architecture logicielle. Je conçois et déploie des systèmes complets, du frontend à la base de données, en passant par la logique métier backend." data-en="My expertise covers web application development, API design, database engineering, and software architecture. I design and deploy complete systems, from frontend to database through backend business logic.">
-        Mon expertise couvre le développement d'applications web, la conception d'API, l'ingénierie des bases de données et l'architecture logicielle. Je conçois et déploie des systèmes complets, du frontend à la base de données, en passant par la logique métier backend.
-      </p>
-      <p data-fr="Orienté résolution de problèmes et performance, je transforme les besoins métiers en solutions efficaces. Désormais 100 % disponible, je suis à l'écoute d'opportunités en CDI, missions freelance ou collaborations techniques." data-en="Focused on problem-solving and performance, I turn business requirements into efficient solutions. Now 100% available, I am open to full-time roles, freelance missions, or technical collaborations.">
-        Orienté résolution de problèmes et performance, je transforme les besoins métiers en solutions efficaces. Désormais 100 % disponible, je suis à l'écoute d'opportunités en CDI, missions freelance ou collaborations techniques.
-      </p>
+        <p data-fr="Développeur logiciel ayant achevé mon cursus de Licence en Informatique à IT University Madagascar, je suis passionné par la création de solutions numériques robustes et à fort impact." data-en="Software developer having completed my Computer Science Bachelor's coursework at IT University Madagascar, I am passionate about building robust, high-impact digital solutions.">
+          Développeur logiciel ayant achevé mon cursus de Licence en Informatique à IT University Madagascar, je suis passionné par la création de solutions numériques robustes et à fort impact.
+        </p>
+        <p data-fr="Mon expertise couvre le développement d'applications web, la conception d'API, l'ingénierie des bases de données et l'architecture logicielle. Je conçois et déploie des systèmes complets, du frontend à la base de données, en passant par la logique métier backend." data-en="My expertise covers web application development, API design, database engineering, and software architecture. I design and deploy complete systems, from frontend to database through backend business logic.">
+          Mon expertise couvre le développement d'applications web, la conception d'API, l'ingénierie des bases de données et l'architecture logicielle. Je conçois et déploie des systèmes complets, du frontend à la base de données, en passant par la logique métier backend.
+        </p>
+        <p data-fr="Orienté résolution de problèmes et performance, je transforme les besoins métiers en solutions efficaces. Désormais 100 % disponible, je suis à l'écoute d'opportunités en CDI, missions freelance ou collaborations techniques." data-en="Focused on problem-solving and performance, I turn business requirements into efficient solutions. Now 100% available, I am open to full-time roles, freelance missions, or technical collaborations.">
+          Orienté résolution de problèmes et performance, je transforme les besoins métiers en solutions efficaces. Désormais 100 % disponible, je suis à l'écoute d'opportunités en CDI, missions freelance ou collaborations techniques.
+        </p>
         
         <div class="about-stats">
           <div class="stat-card">
@@ -1332,6 +961,7 @@ footer {
     </div>
   </div>
 </section>
+
 <!-- EDUCATION -->
 <section id="education">
   <div class="container">
@@ -1354,7 +984,7 @@ footer {
         <div class="timeline-dot" style="background: var(--accent-mint); box-shadow: 0 0 10px rgba(0,212,170,0.5);"></div>
         <div class="timeline-period" style="background: var(--accent-violet-dim); border-color: rgba(108,99,255,0.3); color: #a29bfe;">2022 — 2023</div>
         <div class="timeline-card">
-          <div class="timeline-school" style="color: var(--accent-mint);" data-fr="Lycée ESCA Antanimena — Madagascar" data-en="High School ESCA Antanimena— Madagascar">Lycée ESCA Antanimena— Madagascar</div>
+          <div class="timeline-school" style="color: var(--accent-mint);" data-fr="Lycée ESCA Antanimena — Madagascar" data-en="High School ESCA Antanimena — Madagascar">Lycée ESCA Antanimena — Madagascar</div>
           <div class="timeline-degree" data-fr="Baccalauréat Scientifique" data-en="Scientific Baccalaureate">Baccalauréat Scientifique</div>
           <div class="timeline-desc" data-fr="Mention obtenue avec orientation sciences et mathématiques. Bases solides en logique, algorithmique et sciences exactes." data-en="Diploma with distinction in science and mathematics track. Strong foundations in logic, algorithms, and exact sciences.">
             Mention obtenue avec orientation sciences et mathématiques. Bases solides en logique, algorithmique et sciences exactes.
@@ -1366,7 +996,6 @@ footer {
 </section>
 
 <!-- SKILLS -->
-<!-- SKILLS -->
 <section id="skills">
   <div class="container">
     <div class="section-label"><span data-fr="Compétences" data-en="Skills">Compétences</span></div>
@@ -1374,7 +1003,6 @@ footer {
     <div class="section-divider"></div>
     
     <div class="skills-grid reveal">
-      
       <!-- Backend -->
       <div class="skill-category">
         <div class="category-icon">⚙️</div>
@@ -1414,11 +1042,6 @@ footer {
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg" alt="Django">
             <span class="skill-name">Django</span>
             <div class="skill-level">★★★☆☆</div>
-          </div>
-          <div class="skill-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="Flight">
-            <span class="skill-name">Flight</span>
-            <div class="skill-level">★★★★☆</div>
           </div>
         </div>
       </div>
@@ -1514,19 +1137,8 @@ footer {
             <span class="skill-name">VS Code</span>
             <div class="skill-level">★★★★★</div>
           </div>
-          <div class="skill-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/visualstudio/visualstudio-plain.svg" alt="Visual Studio">
-            <span class="skill-name">Visual Studio</span>
-            <div class="skill-level">★★★★☆</div>
-          </div>
-          <div class="skill-item">
-            <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="Postman" style="width: 42px; height: 42px;">
-            <span class="skill-name">Postman</span>
-            <div class="skill-level">★★★★☆</div>
-          </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -1539,26 +1151,17 @@ footer {
     <div class="section-divider"></div>
     <div class="projects-grid reveal" id="projectsGrid">
 
-      <!-- Card 1: GLPI Analytics -->
+      <!-- Card 1 -->
       <div class="project-card" data-project="roadsignal" onclick="openModal('roadsignal')">
         <div class="project-thumb thumb-blue"></div>
-
         <div class="project-body">
           <div class="project-role">Full Stack & DevOps Developer</div>
-
-          <h3 class="project-name"
-              data-fr="Plateforme de Gestion de Signalisation Routière"
-              data-en="Road Signaling Management Platform">
+          <h3 class="project-name" data-fr="Plateforme de Gestion de Signalisation Routière" data-en="Road Signaling Management Platform">
             Plateforme de Gestion de Signalisation Routière
           </h3>
-
-          <p class="project-desc"
-            data-fr="Application multi-plateforme permettant la gestion et le suivi des signalements routiers via des interfaces Web, Mobile et un backend centralisé."
-            data-en="Multi-platform application for managing and tracking road reports through Web, Mobile and centralized backend interfaces.">
-
+          <p class="project-desc" data-fr="Application multi-plateforme permettant la gestion et le suivi des signalements routiers via des interfaces Web, Mobile et un backend centralisé." data-en="Multi-platform application for managing and tracking road reports through Web, Mobile and centralized backend interfaces.">
             Application multi-plateforme permettant la gestion et le suivi des signalements routiers via des interfaces Web, Mobile et un backend centralisé.
           </p>
-
           <div class="project-tech">
             <span class="tech-pill">React</span>
             <span class="tech-pill">Vue.js</span>
@@ -1566,120 +1169,72 @@ footer {
             <span class="tech-pill">Firebase</span>
             <span class="tech-pill">Docker</span>
           </div>
-
-          <button class="btn-detail"
-            data-fr="Voir les détails →"
-            data-en="View details →">
-            Voir les détails →
-          </button>
+          <button class="btn-detail" data-fr="Voir les détails →" data-en="View details →">Voir les détails →</button>
         </div>
       </div>
 
-      <!-- Card 2: E-Commerce -->
+      <!-- Card 2 -->
       <div class="project-card" data-project="glpi" onclick="openModal('glpi')">
-  <div class="project-thumb thumb-blue"></div>
+        <div class="project-thumb thumb-blue"></div>
+        <div class="project-body">
+          <div class="project-role">Full Stack Developer</div>
+          <h3 class="project-name" data-fr="Plateforme d'Analyse et de Reporting GLPI" data-en="GLPI Analytics & Reporting Platform">
+            Plateforme d'Analyse et de Reporting GLPI
+          </h3>
+          <p class="project-desc" data-fr="Application web permettant l'analyse des tickets, des coûts et des équipements informatiques à travers l'exploitation des API GLPI et des tableaux de bord interactifs." data-en="Web application for analyzing tickets, costs and IT assets through GLPI API integration and interactive dashboards.">
+            Application web permettant l'analyse des tickets, des coûts et des équipements informatiques à travers l'exploitation des API GLPI et des tableaux de bord interactifs.
+          </p>
+          <div class="project-tech">
+            <span class="tech-pill">React</span>
+            <span class="tech-pill">Spring Boot</span>
+            <span class="tech-pill">SQLite</span>
+            <span class="tech-pill">GLPI API</span>
+          </div>
+          <button class="btn-detail" data-fr="Voir les détails →" data-en="View details →">Voir les détails →</button>
+        </div>
+      </div>
 
-  <div class="project-body">
-    <div class="project-role">Full Stack Developer</div>
-
-    <h3 class="project-name"
-        data-fr="Plateforme d'Analyse et de Reporting GLPI"
-        data-en="GLPI Analytics & Reporting Platform">
-      Plateforme d'Analyse et de Reporting GLPI
-    </h3>
-
-    <p class="project-desc"
-       data-fr="Application web permettant l'analyse des tickets, des coûts et des équipements informatiques à travers l'exploitation des API GLPI et des tableaux de bord interactifs."
-       data-en="Web application for analyzing tickets, costs and IT assets through GLPI API integration and interactive dashboards.">
-      Application web permettant l'analyse des tickets, des coûts et des équipements informatiques à travers l'exploitation des API GLPI et des tableaux de bord interactifs.
-    </p>
-
-    <div class="project-tech">
-      <span class="tech-pill">React</span>
-      <span class="tech-pill">Spring Boot</span>
-      <span class="tech-pill">SQLite</span>
-      <span class="tech-pill">GLPI API</span>
-    </div>
-
-    <button class="btn-detail"
-      data-fr="Voir les détails →"
-      data-en="View details →">
-      Voir les détails →
-    </button>
-  </div>
-</div>
-
+      <!-- Card 3 -->
       <div class="project-card" data-project="erp" onclick="openModal('erp')">
-  <div class="project-thumb thumb-purple"></div>
+        <div class="project-thumb thumb-purple"></div>
+        <div class="project-body">
+          <div class="project-role">Full Stack Developer</div>
+          <h3 class="project-name" data-fr="Système ERP de Gestion d'Entreprise" data-en="Enterprise Resource Planning System">
+            Système ERP de Gestion d'Entreprise
+          </h3>
+          <p class="project-desc" data-fr="Conception et développement d'un ERP intégrant la gestion des ressources humaines, des stocks et de la comptabilité dans une plateforme centralisée." data-en="Design and development of an ERP integrating human resources, inventory and accounting management into a centralized platform.">
+            Conception et développement d'un ERP intégrant la gestion des ressources humaines, des stocks et de la comptabilité dans une plateforme centralisée.
+          </p>
+          <div class="project-tech">
+            <span class="tech-pill">Spring Boot</span>
+            <span class="tech-pill">Java</span>
+            <span class="tech-pill">PostgreSQL</span>
+            <span class="tech-pill">JSP</span>
+          </div>
+          <button class="btn-detail" data-fr="Voir les détails →" data-en="View details →">Voir les détails →</button>
+        </div>
+      </div>
 
-  <div class="project-body">
-    <div class="project-role">Full Stack Developer</div>
-
-    <h3 class="project-name"
-        data-fr="Système ERP de Gestion d'Entreprise"
-        data-en="Enterprise Resource Planning System">
-      Système ERP de Gestion d'Entreprise
-    </h3>
-
-    <p class="project-desc"
-       data-fr="Conception et développement d'un ERP intégrant la gestion des ressources humaines, des stocks et de la comptabilité dans une plateforme centralisée."
-       data-en="Design and development of an ERP integrating human resources, inventory and accounting management into a centralized platform.">
-
-      Conception et développement d'un ERP intégrant la gestion des ressources humaines, des stocks et de la comptabilité dans une plateforme centralisée.
-    </p>
-
-    <div class="project-tech">
-      <span class="tech-pill">Spring Boot</span>
-      <span class="tech-pill">Java</span>
-      <span class="tech-pill">PostgreSQL</span>
-      <span class="tech-pill">JSP</span>
-    </div>
-
-    <button class="btn-detail"
-      data-fr="Voir les détails →"
-      data-en="View details →">
-      Voir les détails →
-    </button>
-  </div>
-</div>
-
-      <!-- Card 4: Task Manager API -->
+      <!-- Card 4 -->
       <div class="project-card" data-project="mlunch" onclick="openModal('mlunch')">
-  <div class="project-thumb thumb-green"></div>
-
-  <div class="project-body">
-    <div class="project-role">Backend Developer & Geospatial Systems</div>
-
-    <h3 class="project-name"
-        data-fr="Plateforme de Livraison Géolocalisée"
-        data-en="Geolocation-Based Food Delivery Platform">
-      Plateforme de Livraison Géolocalisée
-    </h3>
-
-    <p class="project-desc"
-       data-fr="Application web de gestion de livraison de repas intégrant des fonctionnalités de géolocalisation et d’optimisation des zones de livraison."
-       data-en="Web application for food delivery management with geolocation and delivery zone optimization features.">
-
-      Application web de gestion de livraison de repas intégrant des fonctionnalités de géolocalisation et d’optimisation des zones de livraison.
-    </p>
-
-    <div class="project-tech">
-      <span class="tech-pill">Python</span>
-      <span class="tech-pill">Django</span>
-      <span class="tech-pill">PostGIS</span>
-      <span class="tech-pill">PostgreSQL</span>
-    </div>
-
-    <button class="btn-detail"
-      data-fr="Voir les détails →"
-      data-en="View details →">
-      Voir les détails →
-    </button>
-  </div>
-</div>
-
-
-
+        <div class="project-thumb thumb-green"></div>
+        <div class="project-body">
+          <div class="project-role">Backend Developer & Geospatial Systems</div>
+          <h3 class="project-name" data-fr="Plateforme de Livraison Géolocalisée" data-en="Geolocation-Based Food Delivery Platform">
+            Plateforme de Livraison Géolocalisée
+          </h3>
+          <p class="project-desc" data-fr="Application web de gestion de livraison de repas intégrant des fonctionnalités de géolocalisation et d’optimisation des zones de livraison." data-en="Web application for food delivery management with geolocation and delivery zone optimization features.">
+            Application web de gestion de livraison de repas intégrant des fonctionnalités de géolocalisation et d’optimisation des zones de livraison.
+          </p>
+          <div class="project-tech">
+            <span class="tech-pill">Python</span>
+            <span class="tech-pill">Django</span>
+            <span class="tech-pill">PostGIS</span>
+            <span class="tech-pill">PostgreSQL</span>
+          </div>
+          <button class="btn-detail" data-fr="Voir les détails →" data-en="View details →">Voir les détails →</button>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -1690,9 +1245,9 @@ footer {
   <div class="footer-grid">
     <div>
       <div class="footer-brand-name">ANDRIANASOLO <span style="color: var(--accent-violet)">Natiora</span></div>
-     <p class="footer-brand-desc" data-fr="Développeur Full Stack diplômé de IT University Madagascar . Disponible pour des opportunités professionnelles et missions freelance." data-en="Full Stack Developer from IT University Madagascar. Available for full-time opportunities and freelance missions.">
-  Développeur Full Stack diplômé de IT University Madagascar. Disponible pour des opportunités professionnelles et missions freelance.
-</p>
+      <p class="footer-brand-desc" data-fr="Développeur Full Stack diplômé de IT University Madagascar. Disponible pour des opportunités professionnelles et missions freelance." data-en="Full Stack Developer from IT University Madagascar. Available for full-time opportunities and freelance missions.">
+        Développeur Full Stack diplômé de IT University Madagascar. Disponible pour des opportunités professionnelles et missions freelance.
+      </p>
     </div>
     <div class="footer-col">
       <h4 data-fr="Navigation" data-en="Navigation">Navigation</h4>
@@ -1704,40 +1259,34 @@ footer {
         <li><a href="#projects" data-fr="Projets" data-en="Projects">Projets</a></li>
       </ul>
     </div>
-   <div class="footer-col" id="contact">
-  <h4 data-fr="Contact" data-en="Contact">Contact</h4>
-  <ul class="footer-links">
-    <li>
-      <a href="https://github.com/Diarintsoa-Natiora/" target="_blank" style="display: inline-flex; align-items: center; gap: 8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        GitHub
-      </a>
-    </li>
-    <li>
-      <a href="https://www.linkedin.com/in/natiora-andrianasolo-56485a369/" target="_blank" style="display: inline-flex; align-items: center; gap: 8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
-        </svg>
-        LinkedIn
-      </a>
-    </li>
-    <li>
-      <a href="mailto:natiorajr@gmail.com" style="display: inline-flex; align-items: center; gap: 8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-        </svg>
-        Email
-      </a>
-    </li>
-  </ul>
-</div>
+    <div class="footer-col" id="contact">
+      <h4 data-fr="Contact" data-en="Contact">Contact</h4>
+      <ul class="footer-links">
+       <li>
+          <a href="https://github.com/Diarintsoa-Natiora/" target="_blank" style="display: inline-flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/natiora-andrianasolo-56485a369/" target="_blank" style="display: inline-flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+        </li>
+        <li>
+          <a href="mailto:natiorajr@gmail.com" style="display: inline-flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+            Email
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
- <div class="footer-bottom">
-  <p class="footer-copy">© <span id="year"></span> ANDRIANASOLO Natiora. <span data-fr="Tous droits réservés." data-en="All rights reserved.">Tous droits réservés.</span></p>
-  <a href="#hero" class="back-to-top" style="text-decoration: none; color: inherit;" data-fr="Retour en haut ↑" data-en="Back to top ↑">Retour en haut ↑</a>
-</div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© <span id="year"></span> ANDRIANASOLO Natiora. <span data-fr="Tous droits réservés." data-en="All rights reserved.">Tous droits réservés.</span></p>
+    <a href="#hero" class="back-to-top" style="text-decoration: none; color: inherit;" data-fr="Retour en haut ↑" data-en="Back to top ↑">Retour en haut ↑</a>
+  </div>
 </footer>
 
 <!-- PROJECT MODAL -->
@@ -1750,9 +1299,7 @@ footer {
 
 <div id="imageModal" class="image-modal" onclick="closeImage()">
   <span class="image-close">&times;</span>
-
   <img id="fullImage" class="image-modal-content">
-
 </div>
 
 <script>
@@ -1761,502 +1308,134 @@ footer {
 // ============================================================
 const PROJECTS = {
   roadsignal: {
-  emoji: '🚦',
-
-  thumbClass: 'thumb-blue',
-
-  role: {
-    fr: 'Développeur Full Stack & DevOps',
-    en: 'Full Stack & DevOps Developer'
-  },
-
-  name: {
-    fr: 'Plateforme de Gestion de Signalisation Routière',
-    en: 'Road Signaling Management Platform'
-  },
-
-  duration: {
-    fr: '2 mois',
-    en: '2 months'
-  },
-
-  desc: {
-    fr: "Co-développement d'une application multi-plateforme destinée à la gestion des signalements routiers. Le projet combine une interface Web React, une application mobile Vue.js et un backend centralisé développé avec Spring Boot afin de centraliser les informations, faciliter le suivi des incidents et améliorer la communication entre les utilisateurs et les gestionnaires.",
-
-    en: "Co-development of a multi-platform application dedicated to road incident reporting management. The project combines a React web interface, a Vue.js mobile application and a centralized Spring Boot backend to centralize information, facilitate incident tracking and improve communication between users and managers."
-  },
-
-  tech: [
-    'React',
-    'Vue.js',
-    'Spring Boot',
-    'Firebase',
-    'Swagger',
-    'Docker',
-    'Docker Compose',
-    'PostgreSQL',
-    'Git'
-  ],
-
-  gallery: [
-  {
-    image: "image/projet/route/image2.png",
-    label: "WEB APP"
-  },
-  {
-    image: "image/projet/route/image7.png",
-    label: "Mobile APP"
-  },
-  {
-    image: "image/projet/route/image9.png",
-    label: "Ajout Signalements"
-  },
-  {
-    image: "image/projet/route/image6.png",
-    label: "Catalogue Signalements"
-  },
-  {
-    image: "image/projet/route/image5.png",
-    label: "Details Signalements"
-  },
-  {
-    image: "image/projet/route/image4.png",
-    label: "Dashboard"
-  },
-  {
-    image: "image/projet/route/image10.png",
-    label: "Notifications"
-  },
-],
-
-  objectives: {
-    fr: [
-      'Centraliser les signalements routiers',
-      'Faciliter le suivi des incidents',
-      'Améliorer la communication entre citoyens et gestionnaires',
-      'Proposer une solution accessible sur Web et Mobile'
+    emoji: '🚦',
+    thumbClass: 'thumb-blue',
+    role: { fr: 'Développeur Full Stack & DevOps', en: 'Full Stack & DevOps Developer' },
+    name: { fr: 'Plateforme de Gestion de Signalisation Routière', en: 'Road Signaling Management Platform' },
+    duration: { fr: '2 mois', en: '2 months' },
+    desc: {
+      fr: "Co-développement d'une application multi-plateforme destinée à la gestion des signalements routiers. Le projet combine une interface Web React, une application mobile Vue.js et un backend centralisé développé avec Spring Boot.",
+      en: "Co-development of a multi-platform application dedicated to road incident reporting management combining a React web interface, a Vue.js mobile app and a Spring Boot backend."
+    },
+    tech: ['React', 'Vue.js', 'Spring Boot', 'Firebase', 'Swagger', 'Docker', 'PostgreSQL', 'Git'],
+    gallery: [
+      { image: "image/projet/route/image2.png", label: "WEB APP" },
+      { image: "image/projet/route/image7.png", label: "Mobile APP" },
+      { image: "image/projet/route/image9.png", label: "Ajout Signalements" },
+      { image: "image/projet/route/image6.png", label: "Catalogue Signalements" },
+      { image: "image/projet/route/image5.png", label: "Details Signalements" },
+      { image: "image/projet/route/image4.png", label: "Dashboard" }
     ],
-
-    en: [
-      'Centralize road incident reports',
-      'Facilitate incident tracking',
-      'Improve communication between citizens and managers',
-      'Provide a solution available on Web and Mobile'
-    ]
+    objectives: {
+      fr: ['Centraliser les signalements routiers', 'Faciliter le suivi des incidents', 'Améliorer la communication citoyens-gestionnaires', 'Solution Web et Mobile'],
+      en: ['Centralize road incident reports', 'Facilitate incident tracking', 'Improve communication', 'Web and Mobile availability']
+    },
+    features: {
+      fr: ['Gestion des signalements', 'App Web React & Mobile Vue.js', 'API REST Spring Boot', 'Auth & Notifications Firebase', 'Docker'],
+      en: ['Incident management', 'React & Vue.js apps', 'Spring Boot REST API', 'Firebase Auth & Notifications', 'Docker']
+    },
+    challenges: {
+      fr: ['Synchronisation multi-plateforme', 'Sécurisation des accès', 'Notifications temps réel', 'Architecture conteneurisée'],
+      en: ['Multi-platform sync', 'Access security', 'Real-time notifications', 'Containerized architecture']
+    }
   },
-
-  features: {
-    fr: [
-      'Gestion des signalements routiers',
-      'Application Web React',
-      'Application Mobile Vue.js',
-      'API REST sécurisée avec Spring Boot',
-      'Authentification Firebase',
-      'Notifications Firebase',
-      'Documentation Swagger',
-      'Suivi et mise à jour des signalements',
-      'Architecture multi-plateforme',
-      'Déploiement avec Docker'
-    ],
-
-    en: [
-      'Road incident reporting management',
-      'React Web Application',
-      'Vue.js Mobile Application',
-      'Secure Spring Boot REST API',
-      'Firebase Authentication',
-      'Firebase Notifications',
-      'Swagger Documentation',
-      'Incident tracking and updates',
-      'Multi-platform architecture',
-      'Docker deployment'
-    ]
-  },
-
-  challenges: {
-    fr: [
-      'Synchronisation entre les plateformes Web, Mobile et Backend',
-      'Sécurisation des accès utilisateurs',
-      'Gestion des notifications en temps réel',
-      'Mise en place d’une architecture conteneurisée',
-      'Collaboration sur un projet multi-technologies'
-    ],
-
-    en: [
-      'Synchronization between Web, Mobile and Backend platforms',
-      'User access security',
-      'Real-time notification management',
-      'Containerized architecture deployment',
-      'Collaboration on a multi-technology project'
-    ]
-  }
-},
   glpi: {
-  emoji: '📊',
-
-  thumbClass: 'thumb-blue',
-
-  role: {
-    fr: 'Développeur Full Stack',
-    en: 'Full Stack Developer'
-  },
-
-  name: {
-    fr: "Plateforme d'Analyse et de Reporting GLPI",
-    en: 'GLPI Analytics & Reporting Platform'
-  },
-
-  duration: {
-    fr: '2 mois',
-    en: '2 months'
-  },
-
-  desc: {
-    fr: "Développement d'une plateforme web permettant l'exploitation des données GLPI à travers des tableaux de bord interactifs. L'application utilise les API REST de GLPI afin de centraliser les informations relatives aux tickets, aux coûts et aux équipements informatiques, tout en proposant des fonctionnalités complémentaires développées avec Spring Boot.",
-
-    en: "Development of a web platform enabling the exploitation of GLPI data through interactive dashboards. The application leverages GLPI REST APIs to centralize information related to tickets, costs and IT assets while providing complementary features developed with Spring Boot."
-  },
-
-  tech: [
-    'React',
-    'Spring Boot',
-    'SQLite',
-    'API REST GLPI',
-    'JavaScript',
-    'HTML',
-    'CSS',
-    'Git'
-  ],
-
-  gallery: [
-    {
-      image: 'image/projet/glpi/image1.png',
-      label: 'Dashboard'
+    emoji: '📊',
+    thumbClass: 'thumb-blue',
+    role: { fr: 'Développeur Full Stack', en: 'Full Stack Developer' },
+    name: { fr: "Plateforme d'Analyse et de Reporting GLPI", en: 'GLPI Analytics & Reporting Platform' },
+    duration: { fr: '2 mois', en: '2 months' },
+    desc: {
+      fr: "Développement d'une plateforme web permettant l'exploitation des données GLPI à travers des tableaux de bord interactifs et des API REST.",
+      en: "Development of a web platform enabling the exploitation of GLPI data through interactive dashboards and REST APIs."
     },
-    {
-      image: 'image/projet/glpi/image2.png',
-      label: 'Analyse Tickets'
+    tech: ['React', 'Spring Boot', 'SQLite', 'API REST GLPI', 'JavaScript', 'Git'],
+    gallery: [
+      { image: 'image/projet/glpi/image1.png', label: 'Dashboard' },
+      { image: 'image/projet/glpi/image2.png', label: 'Analyse Tickets' },
+      { image: 'image/projet/glpi/image3.png', label: 'Calcul des coûts' },
+      { image: 'image/projet/glpi/image4.png', label: 'Analyse Assets' }
+    ],
+    objectives: {
+      fr: ['Exploiter les données GLPI', 'Centraliser les infos', 'Faciliter le suivi'],
+      en: ['Leverage GLPI data', 'Centralize info', 'Facilitate monitoring']
     },
-    {
-      image: 'image/projet/glpi/image3.png',
-      label: 'Calcul des coûts'
+    features: {
+      fr: ['Gestion des tickets', 'Analyse des équipements', 'Calcul des coûts', 'Tableaux de bord'],
+      en: ['Ticket management', 'Asset analysis', 'Cost calculation', 'Interactive dashboards']
     },
-    {
-      image: 'image/projet/glpi/image4.png',
-      label: 'Analyse Assets'
-    },
-    {
-      image: 'image/projet/glpi/image5.png',
-      label: 'Importation Data'
+    challenges: {
+      fr: ['Intégration API GLPI', 'Agrégation de données', 'Design des dashboards'],
+      en: ['GLPI API integration', 'Data aggregation', 'Dashboard design']
     }
-  ],
-
-  objectives: {
-    fr: [
-      'Exploiter les données GLPI via les API REST',
-      'Centraliser les informations dans une interface moderne',
-      'Faciliter le suivi des tickets et des équipements',
-      'Produire des indicateurs de performance pertinents'
-    ],
-
-    en: [
-      'Leverage GLPI data through REST APIs',
-      'Centralize information in a modern interface',
-      'Facilitate ticket and asset monitoring',
-      'Provide meaningful performance indicators'
-    ]
   },
-
-  features: {
-    fr: [
-      'Gestion et analyse des tickets',
-      'Analyse des équipements informatiques',
-      'Calcul automatique des coûts',
-      'Statistiques et indicateurs de performance',
-      'Tableaux de bord interactifs',
-      'Exploitation des API GLPI',
-      'Fonctionnalités complémentaires développées avec Spring Boot',
-      'Visualisation des données métier'
-    ],
-
-    en: [
-      'Ticket management and analysis',
-      'IT asset analysis',
-      'Automatic cost calculation',
-      'Statistics and performance indicators',
-      'Interactive dashboards',
-      'GLPI API integration',
-      'Additional Spring Boot features',
-      'Business data visualization'
-    ]
-  },
-
-  challenges: {
-    fr: [
-      'Compréhension et intégration des API GLPI',
-      'Conception d’une architecture combinant GLPI et services personnalisés',
-      'Traitement et agrégation de données provenant de multiples sources',
-      'Création de tableaux de bord intuitifs et performants'
-    ],
-
-    en: [
-      'Understanding and integrating GLPI APIs',
-      'Designing an architecture combining GLPI and custom services',
-      'Processing and aggregating data from multiple sources',
-      'Building intuitive and efficient dashboards'
-    ]
-  }
-},
   erp: {
-  emoji: '🏢',
-
-  thumbClass: 'thumb-purple',
-
-  role: {
-    fr: 'Développeur Full Stack',
-    en: 'Full Stack Developer'
-  },
-
-  name: {
-    fr: "Système ERP de Gestion d'Entreprise",
-    en: 'Enterprise Resource Planning System'
-  },
-
-  duration: {
-    fr: '5 mois',
-    en: '5 months'
-  },
-
-  desc: {
-    fr: "Conception et développement d'un système ERP permettant de centraliser plusieurs processus métiers de l'entreprise au sein d'une plateforme unique. Le projet intègre la gestion des ressources humaines, des stocks et de la comptabilité afin d'améliorer la circulation de l'information et l'efficacité opérationnelle.",
-
-    en: "Design and development of an ERP system centralizing several business processes within a single platform. The project integrates human resources, inventory and accounting management to improve information flow and operational efficiency."
-  },
-
-  tech: [
-    'Java',
-    'Spring Boot',
-    'PostgreSQL',
-    'JSP',
-    'HTML',
-    'CSS',
-    'Git'
-  ],
-
-  gallery: [
-    {
-      image: 'image/projet/erp/image6.png',
-      label: 'Ressources Humaines'
+    emoji: '🏢',
+    thumbClass: 'thumb-purple',
+    role: { fr: 'Développeur Full Stack', en: 'Full Stack Developer' },
+    name: { fr: "Système ERP de Gestion d'Entreprise", en: 'Enterprise Resource Planning System' },
+    duration: { fr: '5 mois', en: '5 months' },
+    desc: {
+      fr: "Conception et développement d'un système ERP centralisant les ressources humaines, les stocks et la comptabilité.",
+      en: "Design and development of an ERP system centralizing human resources, inventory, and accounting."
     },
-    {
-      image: 'image/projet/erp/image7.png',
-      label: 'Stocks'
-    },
-     {
-      image: 'image/projet/erp/image8.png',
-      label: 'Comptabilité'
-    },
-     {
-      image: 'image/projet/erp/image4.png',
-      label: 'Utilisateurs'
-    } ,
-    {
-      image: 'image/projet/erp/image5.png',
-      label: 'Projets'
-    }    
-  ],
-
-  objectives: {
-    fr: [
-      'Centraliser les processus métiers',
-      'Automatiser la gestion des ressources humaines',
-      'Optimiser le suivi des stocks',
-      'Faciliter la gestion comptable'
+    tech: ['Java', 'Spring Boot', 'PostgreSQL', 'JSP', 'Git'],
+    gallery: [
+      { image: 'image/projet/erp/image6.png', label: 'Ressources Humaines' },
+      { image: 'image/projet/erp/image7.png', label: 'Stocks' },
+      { image: 'image/projet/erp/image8.png', label: 'Comptabilité' },
+      { image: 'image/projet/erp/image4.png', label: 'Utilisateurs' }
     ],
-
-    en: [
-      'Centralize business processes',
-      'Automate human resource management',
-      'Optimize inventory tracking',
-      'Facilitate accounting management'
-    ]
-  },
-
-  features: {
-    fr: [
-      'Gestion des employés',
-      'Gestion des postes et départements',
-      'Gestion des stocks',
-      'Entrées et sorties de stock',
-      'Gestion comptable',
-      'Suivi des opérations financières',
-      'Tableaux de bord',
-      'Gestion des utilisateurs et permissions'
-    ],
-
-    en: [
-      'Employee management',
-      'Departments and positions management',
-      'Inventory management',
-      'Stock movements tracking',
-      'Accounting management',
-      'Financial operations tracking',
-      'Dashboards',
-      'User and permission management'
-    ]
-  },
-
-  challenges: {
-    fr: [
-      'Conception d’une architecture modulaire ERP',
-      'Synchronisation entre les différents modules métiers',
-      'Optimisation des requêtes PostgreSQL',
-      'Gestion de l’intégrité des données entre RH, stock et comptabilité'
-    ],
-
-    en: [
-      'Designing a modular ERP architecture',
-      'Synchronization between business modules',
-      'PostgreSQL query optimization',
-      'Maintaining data integrity across HR, inventory and accounting'
-    ]
-  }
-},
-mlunch: {
-  emoji: '🍽️',
-
-  thumbClass: 'thumb-green',
-
-  role: {
-    fr: 'Développeur Backend & Géolocalisation',
-    en: 'Backend Developer & Geospatial Systems'
-  },
-
-  name: {
-    fr: 'Plateforme de Livraison Géolocalisée',
-    en: 'Geolocation-Based Food Delivery Platform'
-  },
-
-  duration: {
-    fr: '3 mois',
-    en: '3 months'
-  },
-
-  desc: {
-    fr: "Développement d'une plateforme web de gestion de livraison de repas intégrant des fonctionnalités avancées de géolocalisation. Le système permet la gestion des utilisateurs, des restaurants, des commandes et des livraisons tout en exploitant les données géospatiales pour optimiser les zones et parcours de livraison.",
-
-    en: "Development of a food delivery management platform featuring advanced geolocation capabilities. The system manages users, restaurants, orders and deliveries while leveraging geospatial data to optimize delivery zones and routes."
-  },
-
-  tech: [
-    'Python',
-    'Django',
-    'PostgreSQL',
-    'PostGIS',
-    'GDAL',
-    'OSGeo4W',
-    'HTML',
-    'CSS',
-    'Git'
-  ],
-
-  gallery: [
-    {
-      image: 'image/projet/mlunch/image1.png',
-      label: 'Accueil'
+    objectives: {
+      fr: ['Centraliser les processus métiers', 'Automatiser la gestion RH', 'Optimiser les stocks'],
+      en: ['Centralize business processes', 'Automate HR management', 'Optimize inventory']
     },
-    {
-      image: 'image/projet/mlunch/image2.png',
-      label: 'Connexion'
+    features: {
+      fr: ['Gestion des employés', 'Mouvements de stock', 'Comptabilité financière', 'Tableaux de bord'],
+      en: ['Employee management', 'Stock tracking', 'Financial accounting', 'Dashboards']
     },
-    {
-      image: 'image/projet/mlunch/image3.png',
-      label: 'Inscription'
-    },
-    {
-      image: 'image/projet/mlunch/image4.png',
-      label: 'Restaurants'
-    },
-    {
-      image: 'image/projet/mlunch/image5.png',
-      label: 'Panier/Paiement'
-    },
-    {
-      image: 'image/projet/mlunch/image6.png',
-      label: 'Commandes'
-    },
-    {
-      image: 'image/projet/mlunch/image7.png',
-      label: 'Livraison'
-    },
-     {
-      image: 'image/projet/mlunch/image8.png',
-      label: 'Secteurs'
+    challenges: {
+      fr: ['Architecture modulaire', 'Optimisation SQL', 'Intégrité des données'],
+      en: ['Modular architecture', 'SQL optimization', 'Data integrity']
     }
-  ],
-
-  objectives: {
-    fr: [
-      'Faciliter la gestion des commandes et des livraisons',
-      'Exploiter les données géospatiales pour optimiser les trajets',
-      'Centraliser les interactions entre clients, restaurants et livreurs',
-      'Améliorer l’efficacité des opérations de livraison'
-    ],
-
-    en: [
-      'Simplify order and delivery management',
-      'Leverage geospatial data to optimize routes',
-      'Centralize interactions between customers, restaurants and drivers',
-      'Improve delivery efficiency'
-    ]
   },
-
-  features: {
-    fr: [
-      'Gestion des utilisateurs',
-      'Gestion des restaurants',
-      'Gestion des commandes',
-      'Suivi des livraisons',
-      'Traitement des données géographiques',
-      'Analyse des zones de couverture',
-      'Optimisation des parcours de livraison',
-      'Administration centralisée'
+  mlunch: {
+    emoji: '🍽️',
+    thumbClass: 'thumb-green',
+    role: { fr: 'Développeur Backend & Géolocalisation', en: 'Backend Developer & Geospatial Systems' },
+    name: { fr: 'Plateforme de Livraison Géolocalisée', en: 'Geolocation-Based Food Delivery Platform' },
+    duration: { fr: '3 mois', en: '3 months' },
+    desc: {
+      fr: "Développement d'une plateforme web de livraison de repas intégrant des fonctionnalités avancées de géolocalisation et PostGIS.",
+      en: "Development of a food delivery platform featuring advanced geolocation capabilities and PostGIS."
+    },
+    tech: ['Python', 'Django', 'PostgreSQL', 'PostGIS', 'Git'],
+    gallery: [
+      { image: 'image/projet/mlunch/image1.png', label: 'Accueil' },
+      { image: 'image/projet/mlunch/image4.png', label: 'Restaurants' },
+      { image: 'image/projet/mlunch/image6.png', label: 'Commandes' },
+      { image: 'image/projet/mlunch/image7.png', label: 'Livraison' }
     ],
-
-    en: [
-      'User management',
-      'Restaurant management',
-      'Order management',
-      'Delivery tracking',
-      'Geospatial data processing',
-      'Coverage area analysis',
-      'Delivery route optimization',
-      'Centralized administration'
-    ]
-  },
-
-  challenges: {
-    fr: [
-      'Prise en main de PostGIS et des données spatiales',
-      'Intégration des fonctionnalités géographiques dans PostgreSQL',
-      'Optimisation des requêtes géospatiales',
-      'Modélisation des relations entre utilisateurs, restaurants et livraisons'
-    ],
-
-    en: [
-      'Learning PostGIS and spatial data concepts',
-      'Integrating geospatial capabilities into PostgreSQL',
-      'Optimizing geospatial queries',
-      'Modeling relationships between users, restaurants and deliveries'
-    ]
+    objectives: {
+      fr: ['Gestion des commandes', 'Optimisation des parcours', 'Analyse géospatiale'],
+      en: ['Order management', 'Route optimization', 'Geospatial analysis']
+    },
+    features: {
+      fr: ['Gestion utilisateurs & restaurants', 'Suivi de livraison', 'Analyse de couverture'],
+      en: ['User & restaurant management', 'Delivery tracking', 'Coverage analysis']
+    },
+    challenges: {
+      fr: ['Maîtrise de PostGIS', 'Requêtes géospatiales', 'Modélisation des relations'],
+      en: ['PostGIS mastery', 'Geospatial queries', 'Relationship modeling']
+    }
   }
-}
 };
 
 // ============================================================
-// LANGUAGE
+// LANGUAGE & THEME LOGIC
 // ============================================================
 let currentLang = localStorage.getItem('portfolio-lang') || 'fr';
+let currentTheme = localStorage.getItem('portfolio-theme') || 'dark';
 
 function toggleLang() {
   currentLang = currentLang === 'fr' ? 'en' : 'fr';
@@ -2276,12 +1455,8 @@ function applyLang() {
     if (val.includes('&') || val.includes('<')) el.innerHTML = val;
     else el.textContent = val;
   });
+  applyTheme(); // Refresh theme tooltip language
 }
-
-// ============================================================
-// THEME
-// ============================================================
-let currentTheme = localStorage.getItem('portfolio-theme') || 'dark';
 
 function toggleTheme() {
   currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -2291,22 +1466,22 @@ function toggleTheme() {
 
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', currentTheme);
-  document.getElementById('themeBtn').textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+  const themeBtn = document.getElementById('themeBtn');
+  if (currentTheme === 'dark') {
+    themeBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+    themeBtn.title = currentLang === 'fr' ? 'Passer au mode clair' : 'Switch to light mode';
+  } else {
+    themeBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    themeBtn.title = currentLang === 'fr' ? 'Passer au mode sombre' : 'Switch to dark mode';
+  }
 }
 
 // ============================================================
-// MOBILE MENU
+// MOBILE MENU & MODAL LOGIC
 // ============================================================
-function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
-}
-function closeMenu() {
-  document.getElementById('mobileMenu').classList.remove('open');
-}
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
 
-// ============================================================
-// MODAL
-// ============================================================
 function openModal(projectId) {
   const p = PROJECTS[projectId];
   const lang = currentLang;
@@ -2330,11 +1505,9 @@ function openModal(projectId) {
   const featHTML = features.map(f => `<li>${f}</li>`).join('');
   const chalHTML = challenges.map(c => `<li>${c}</li>`).join('');
 
-  const sectionTitles = {
-    fr: { desc: 'Description', duration: 'Durée du projet', gallery: 'Galerie', tech: 'Technologies', obj: 'Objectifs', feat: 'Fonctionnalités', chal: 'Défis techniques' },
-    en: { desc: 'Description', duration: 'Project Duration', gallery: 'Gallery', tech: 'Technologies', obj: 'Objectives', feat: 'Features', chal: 'Technical Challenges' }
-  };
-  const t = sectionTitles[lang];
+  const t = lang === 'fr' ? 
+    { desc: 'Description', duration: 'Durée du projet', gallery: 'Galerie', tech: 'Technologies', obj: 'Objectifs', feat: 'Fonctionnalités', chal: 'Défis techniques' } :
+    { desc: 'Description', duration: 'Project Duration', gallery: 'Gallery', tech: 'Technologies', obj: 'Objectives', feat: 'Features', chal: 'Technical Challenges' };
 
   document.getElementById('modalContent').innerHTML = `
     <div class="modal-hero ${p.thumbClass}" style="font-size:4rem">${p.emoji}</div>
@@ -2342,53 +1515,28 @@ function openModal(projectId) {
       <div class="modal-role">${role}</div>
       <h2 class="modal-title">${name}</h2>
       <div class="modal-duration">⏱ ${duration}</div>
-      <div class="modal-section">
-        <div class="modal-section-title">${t.desc}</div>
-        <p class="modal-desc">${desc}</p>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">${t.gallery}</div>
-        <div class="modal-gallery">${galleryHTML}</div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">${t.tech}</div>
-        <div class="modal-tech">${techHTML}</div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">${t.obj}</div>
-        <ul class="modal-list">${objHTML}</ul>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">${t.feat}</div>
-        <ul class="modal-list">${featHTML}</ul>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">${t.chal}</div>
-        <ul class="modal-list">${chalHTML}</ul>
-      </div>
+      <div class="modal-section"><div class="modal-section-title">${t.desc}</div><p class="modal-desc">${desc}</p></div>
+      <div class="modal-section"><div class="modal-section-title">${t.gallery}</div><div class="modal-gallery">${galleryHTML}</div></div>
+      <div class="modal-section"><div class="modal-section-title">${t.tech}</div><div class="modal-tech">${techHTML}</div></div>
+      <div class="modal-section"><div class="modal-section-title">${t.obj}</div><ul class="modal-list">${objHTML}</ul></div>
+      <div class="modal-section"><div class="modal-section-title">${t.feat}</div><ul class="modal-list">${featHTML}</ul></div>
+      <div class="modal-section"><div class="modal-section-title">${t.chal}</div><ul class="modal-list">${chalHTML}</ul></div>
     </div>
   `;
-
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+
 function openImage(src) {
   document.getElementById("imageModal").style.display = "flex";
   document.getElementById("fullImage").src = src;
 }
-
-function closeImage() {
-  document.getElementById("imageModal").style.display = "none";
-}
+function closeImage() { document.getElementById("imageModal").style.display = "none"; }
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
-}
-
+function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 function initProjectThumbnails() {
@@ -2404,7 +1552,7 @@ function initProjectThumbnails() {
 }
 
 // ============================================================
-// SCROLL REVEAL
+// SCROLL REVEAL & INITIALIZATION
 // ============================================================
 const observer = new IntersectionObserver(entries => {
   entries.forEach((entry, i) => {
@@ -2415,8 +1563,6 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Stagger children of grids
 document.querySelectorAll('.projects-grid, .skills-grid').forEach(grid => {
   Array.from(grid.children).forEach((child, i) => {
     child.classList.add('reveal');
@@ -2425,31 +1571,12 @@ document.querySelectorAll('.projects-grid, .skills-grid').forEach(grid => {
   });
 });
 
-// ============================================================
-// NAVBAR SCROLL
-// ============================================================
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('navbar');
-  if (window.scrollY > 50) {
-    nav.style.boxShadow = '0 4px 30px rgba(0,0,0,0.3)';
-  } else {
-    nav.style.boxShadow = 'none';
-  }
-});
-
-// ============================================================
-// YEAR
-// ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   initProjectThumbnails();
+  document.getElementById('year').textContent = new Date().getFullYear();
+  applyTheme();
+  applyLang();
 });
-document.getElementById('year').textContent = new Date().getFullYear();
-
-// ============================================================
-// INIT
-// ============================================================
-applyTheme();
-applyLang();
 </script>
 </body>
 </html>
