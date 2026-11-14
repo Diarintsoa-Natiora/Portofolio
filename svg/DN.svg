@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="42" height="42" role="img" aria-label="Logo Nati">
+  <title>Logo Nati - Développeur Full Stack</title>
+  <style>
+    .logo-stroke {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+  <!-- Tes chemins et lignes ici -->
+  <path class="logo-stroke" d="M 45,30 C 135,30 170,70 170,100 C 170,130 135,170 45,170" />
+  <line class="logo-stroke" x1="78" y1="38" x2="78" y2="162" />
+  <line class="logo-stroke" x1="52" y1="72" x2="52" y2="128" />
+  <line class="logo-stroke" x1="104" y1="72" x2="104" y2="128" />
+  <line class="logo-stroke" x1="52" y1="72" x2="104" y2="128" />
+</svg>

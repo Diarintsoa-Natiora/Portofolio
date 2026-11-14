@@ -10,6 +10,7 @@
 <title>ANDRIANASOLO Natiora | Développeur Full Stack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="chemin-vers-ton-logo.svg">
 <style>
 /* ============================================================
    DESIGN TOKENS
@@ -1148,6 +1149,29 @@ footer {
   
   /* Conservez vos styles actuels (padding, background, border, cursor, etc.) */
 }
+.nav-logo {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.nav-logo:hover {
+  transform: scale(1.08); /* Petit effet de zoom élégant */
+}
+
+.nav-logo:hover svg {
+  stroke: var(--accent-color, #3b82f6); /* Changement de couleur au survol */
+}
 </style>
 </head>
 <body>
@@ -1157,10 +1181,8 @@ footer {
 <!-- NAVBAR -->
 <nav class="navbar" id="navbar">
   <div class="nav-logo">
-    <span class="logo-symbol">&lt;</span>
-    <span class="logo-name">AN</span>
-    <span class="logo-symbol">/&gt;</span>
-  </div>
+  <img src="svg/DN.svg" alt="Logo Nati">
+</div>
 
   <ul class="nav-links">
     <li><a href="#hero" data-fr="Accueil" data-en="Home">Accueil</a></li>
@@ -1194,12 +1216,12 @@ footer {
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <ul>
-    <li><a href="#hero" onclick="closeMenu()">Accueil</a></li>
-    <li><a href="#about" onclick="closeMenu()">À Propos</a></li>
-    <li><a href="#education" onclick="closeMenu()">Formation</a></li>
-    <li><a href="#skills" onclick="closeMenu()">Compétences</a></li>
-    <li><a href="#projects" onclick="closeMenu()">Projets</a></li>
-    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+    <li><a href="#hero" onclick="closeMenu()" data-fr="Accueil" data-en="Home">Accueil</a></li>
+    <li><a href="#about" onclick="closeMenu()" data-fr="À Propos" data-en="About">À Propos</a></li>
+    <li><a href="#education" onclick="closeMenu()" data-fr="Formation" data-en="Education">Formation</a></li>
+    <li><a href="#skills" onclick="closeMenu()" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+    <li><a href="#projects" onclick="closeMenu()" data-fr="Projets" data-en="Projects">Projets</a></li>
+    <li><a href="#contact" onclick="closeMenu()" data-fr="Contact" data-en="Contact">Contact</a></li>
   </ul>
 </div>
 
