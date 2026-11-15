@@ -876,9 +876,14 @@ footer {
         Je conçois et développe des applications web et des solutions métiers modernes, en créant des fonctionnalités utiles, en assurant une intégration efficace avec les environnements existants et en contribuant à la maintenance ainsi qu'à l'évolution des applications.
       </p>
       <div class="hero-cta">
-        <a href="CV/CV-Diarintsoa-Natiora.pdf" class="btn-primary" download>
+      <a href="CV/CV-Diarintsoa-Natiora.pdf" 
+        id="download-cv-btn" 
+        class="btn-primary" 
+        data-fr-href="CV/CV-Diarintsoa-Natiora.pdf" 
+        data-en-href="CV/CV_Diarintsoa_English.pdf" 
+        download>
           ⬇ <span data-fr="Télécharger CV" data-en="Download CV">Télécharger CV</span>
-        </a>
+      </a>
         <a href="#projects" class="btn-outline">
           <span data-fr="Voir mes projets" data-en="See my projects">Voir mes projets</span> →
         </a>
@@ -1449,6 +1454,13 @@ function applyLang() {
   if (flag) flag.textContent = currentLang === 'fr' ? '🇫🇷' : '🇬🇧';
   if (langText) langText.textContent = currentLang === 'fr' ? 'FR' : 'EN';
 
+  const downloadBtn = document.getElementById('download-cv-btn');
+  if (downloadBtn) {
+    const newHref = downloadBtn.getAttribute(`data-${currentLang}-href`);
+    if (newHref) {
+      downloadBtn.setAttribute('href', newHref);
+    }
+  }
   document.querySelectorAll('[data-fr]').forEach(el => {
     const val = el.getAttribute(`data-${currentLang}`);
     if (!val) return;
